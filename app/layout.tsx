@@ -1,3 +1,5 @@
+// app/layout.tsx
+
 import type {Metadata} from 'next';
 import { Inter, Anton, Poppins } from 'next/font/google';
 import './globals.css';
@@ -5,6 +7,7 @@ import { CartProvider } from '@/lib/CartContext';
 import { NavBar } from '@/components/NavBar';
 import { Footer } from '@/components/Footer';
 import { CartDrawer } from '@/components/CartDrawer';
+import { brand } from '@/lib/data/brand';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -24,8 +27,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'Diva Steps Collection',
-  description: 'Premium footwear ecommerce website optimized for mobile.',
+  title: brand.seo.title,
+  description: brand.seo.description,
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
@@ -35,7 +38,10 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <CartProvider>
           <NavBar />
           <CartDrawer />
-          <main className="min-h-screen pt-[72px] pb-16 md:pb-0">{children}</main>
+          {/* THE FIX: Centralized responsive padding */}
+          <main className="flex flex-col min-h-screen pt-[96px] md:pt-[100px] pb-[88px] md:pb-0">
+            {children}
+          </main>
           <Footer />
         </CartProvider>
       </body>

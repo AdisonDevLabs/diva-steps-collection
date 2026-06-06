@@ -1,3 +1,5 @@
+// lib/data/products.ts
+
 export interface Product {
   id: string;
   name: string;
@@ -626,3 +628,26 @@ export const getBestSellers = () => products.filter((p) => p.isBestSeller);
 export const getNewArrivals = () => products.filter((p) => p.isNewArrival);
 export const getFlashDeals = () => products.filter((p) => p.isFlashDeal);
 export const getProductById = (id: string) => products.find((p) => p.id === id);
+
+export const colorMap: Record<string, string> = {
+  'Black': '#000000',
+  'White': '#ffffff',
+  'Red': '#ff0000',
+  'Beige': '#f5f5dc',
+  'Nude': '#e3bc9a',
+  'Brown': '#8b4513',
+  'Silver': '#c0c0c0',
+  'Gold': '#ffd700',
+  'Blue': '#0000ff',
+  'Pink': '#ffc0cb'
+};
+
+export const sizeGuideData = [
+  {eu: 36, uk: 3, us: 5, cm: 22.5},
+  {eu: 37, uk: 4, us: 6, cm: 23.5},
+  {eu: 38, uk: 5, us: 7, cm: 24},
+  {eu: 39, uk: 6, us: 8, cm: 25},
+  {eu: 40, uk: 7, us: 9, cm: 25.5},
+  {eu: 41, uk: 8, us: 10, cm: 26.5},
+  {eu: 42, uk: 9, us: 11, cm: 27},
+];

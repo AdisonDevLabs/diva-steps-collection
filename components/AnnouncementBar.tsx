@@ -1,17 +1,11 @@
+// components/AnnouncementBar.tsx
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import { Truck, MessageCircle, Star, Sparkles, Tag } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { brand } from '@/lib/data/brand';
-
-const messages = [
-  { text: "Fast Delivery Across Kenya", icon: Truck },
-  { text: "Order Easily Via WhatsApp", icon: MessageCircle },
-  { text: "New Arrivals Added Weekly", icon: Sparkles },
-  { text: "Trusted by Hundreds of Happy Customers", icon: Star },
-  { text: "Flash Deals Available Today", icon: Tag },
-];
+import { brand, announcementMessages as messages } from '@/lib/data/brand';
 
 export function AnnouncementBar() {
   const [index, setIndex] = useState(0);
@@ -52,11 +46,11 @@ export function AnnouncementBar() {
       <div className="hidden md:flex w-full items-center justify-between max-w-7xl mx-auto px-4 font-semibold text-sm">
         <div className="flex items-center space-x-2">
            <Truck className="h-4 w-4" />
-           <span>Fast Delivery Across Kenya</span>
+           <span>{messages[0].text}</span>
         </div>
         <div className="flex items-center space-x-2">
            <Sparkles className="h-4 w-4" />
-           <span>New Arrivals Weekly</span>
+           <span>{messages[2].text}</span>
         </div>
         <a 
           href={`https://wa.me/${brand.whatsappNumber}`} 

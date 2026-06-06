@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, Minus, Plus, ShoppingBag, MessageCircle, CheckCircle, ShieldCheck, Truck, ArrowRight } from 'lucide-react';
 import { useCart } from '@/lib/CartContext';
 import { formatPrice } from '@/lib/data';
-import { brand } from '@/lib/data/brand';
+import { brand, cartTrustFeatures } from '@/lib/data/brand';
 import Image from 'next/image';
 
 export function CartDrawer() {
@@ -136,18 +136,11 @@ export function CartDrawer() {
                   <div className="pt-2 pb-4">
                     <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Why Shop With Us</h4>
                     <div className="grid grid-cols-1 gap-2 text-[11px] text-gray-400 font-light">
-                      <div className="flex items-center">
-                        <Truck className="h-3.5 w-3.5 mr-2 text-[#C6FF00]" /> Fast Delivery Across Kenya
-                      </div>
-                      <div className="flex items-center">
-                        <CheckCircle className="h-3.5 w-3.5 mr-2 text-[#C6FF00]" /> Quality Checked
-                      </div>
-                      <div className="flex items-center">
-                        <ShieldCheck className="h-3.5 w-3.5 mr-2 text-[#C6FF00]" /> Secure Ordering
-                      </div>
-                      <div className="flex items-center">
-                        <MessageCircle className="h-3.5 w-3.5 mr-2 text-[#C6FF00]" /> WhatsApp Support
-                      </div>
+                      {cartTrustFeatures.map((feature, idx) => (
+                        <div key={idx} className="flex items-center">
+                          <feature.icon className="h-3.5 w-3.5 mr-2 text-[#C6FF00]" /> {feature.text}
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>

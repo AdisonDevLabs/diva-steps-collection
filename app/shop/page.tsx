@@ -1,3 +1,5 @@
+// app/shop/page.tsx
+
 'use client';
 
 import React, { useState, useEffect, Suspense } from 'react';
@@ -5,10 +7,11 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Filter, ChevronDown, Check, X, SlidersHorizontal, MessageCircle, Search, Heart, Eye, Star, SearchX } from 'lucide-react';
-import { dummyProducts, formatPrice } from '@/lib/data';
+import { formatPrice } from '@/lib/data';
 import { useCart } from '@/lib/CartContext';
-import { Product } from '@/lib/data/products';
+import { Product, products } from '@/lib/data/products';
 import { brand } from '@/lib/data/brand';
+import { discoveryChips, filterCategories, searchSuggestions, priceRanges, filterSizes } from '@/lib/data/categories';
 import { motion, AnimatePresence } from 'motion/react';
 
 function ShopContent() {
@@ -22,14 +25,6 @@ function ShopContent() {
   const [isAdvancedFiltersOpen, setIsAdvancedFiltersOpen] = useState(false);
   const [sortOption, setSortOption] = useState('trending-now');
   
-  const discoveryChips = [
-    { id: 'trending', label: '🔥 Trending', context: 'Trending Styles' },
-    { id: 'best-sellers', label: '⭐ Best Sellers', context: 'Best Sellers' },
-    { id: 'just-dropped', label: '🆕 Just Dropped', context: 'New Arrivals' },
-    { id: 'budget-picks', label: '💰 Budget Picks', context: 'Budget Friendly' },
-    { id: 'premium-styles', label: '✨ Premium Styles', context: 'Premium Collection' },
-  ];
-  
   const [discoveryMode, setDiscoveryMode] = useState<string>('trending');
   
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
@@ -41,8 +36,6 @@ function ShopContent() {
   const [hasDismissedTooltip, setHasDismissedTooltip] = useState(false);
 
   const { addToCart } = useCart();
-
-  const categories = ['All', 'Heels', 'Sneakers', 'Flats', 'Sandals', 'Boots'];
   
   // Reset pagination when filters change
   useEffect(() => {
@@ -83,7 +76,7 @@ function ShopContent() {
   }, [filterCategory, searchQuery, sortOption, rawCategory, discoveryMode]);
 
   // Apply filters
-  let filteredProducts = [...dummyProducts];
+  let filteredProducts = [...products];
   
   if (searchQuery) {
     const query = searchQuery.toLowerCase();
@@ -372,7 +365,7 @@ function ShopContent() {
               <div className="mt-16 w-full max-w-2xl">
                 <h4 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-6">Search Suggestions</h4>
                 <div className="flex flex-wrap justify-center gap-2">
-                  {['Trending Sneakers', 'Best Selling Heels', 'Office Shoes', 'Party Wear', 'Budget Picks'].map(chip => (
+                  {searchSuggestions.map(chip => (
                     <button 
                       key={chip}
                       onClick={() => { setSearchQuery(chip); setFilterCategory('All'); }}
@@ -590,7 +583,7 @@ function ShopContent() {
                     )}
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {categories.map((cat) => (
+                    {filterCategories.map((cat) => (
                       <button
                         key={cat}
                         onClick={() => setFilterCategory(cat)}
@@ -609,7 +602,7 @@ function ShopContent() {
                 <div>
                   <h3 className="font-bold uppercase tracking-widest text-xs text-gray-400 mb-4">Price Range</h3>
                   <div className="flex flex-wrap gap-2">
-                    {['Under 2,000', '2,000 - 4,000', 'Over 4,000'].map((price) => (
+                    {priceRanges.map((price) => (
                       <button
                         key={price}
                          className="px-4 py-2 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-colors border bg-[#1A1A1A] text-gray-400 border-white/5 hover:bg-white/10 hover:text-white"
@@ -623,7 +616,7 @@ function ShopContent() {
                 <div>
                   <h3 className="font-bold uppercase tracking-widest text-xs text-gray-400 mb-4">Size</h3>
                   <div className="grid grid-cols-4 gap-2">
-                    {['36', '37', '38', '39', '40', '41', '42', '43'].map((size) => (
+                    {filterSizes.map((size) => (
                       <button
                         key={size}
                          className="py-2.5 rounded text-[10px] sm:text-xs font-bold transition-colors border bg-[#1A1A1A] text-gray-400 border-white/5 hover:bg-white/10 hover:text-white"

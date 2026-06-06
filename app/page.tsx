@@ -1,3 +1,5 @@
+// app/page.tsx
+
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
@@ -8,7 +10,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, Star, ShoppingBag, Truck, ShieldCheck, Clock, MessageCircle, ShoppingCart, Tag, Flame, Eye, Zap, Sparkles, Wallet, Users, Smartphone, CheckCircle, Heart, Facebook, Instagram, Send, Mail } from 'lucide-react';
 import { dummyProducts, formatPrice } from '@/lib/data';
-import { testimonials } from '@/lib/data/testimonials';
+import { testimonials, reviewAvatars, reviewStats } from '@/lib/data/testimonials';
 import { heroCategories } from '@/lib/data/categories';
 import { brand } from '@/lib/data/brand';
 import { useCart } from '@/lib/CartContext';
@@ -119,7 +121,7 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="text-gray-200 text-base sm:text-lg md:text-xl max-w-2xl mb-8 font-medium leading-relaxed drop-shadow-md"
             >
-              Stylish, affordable, and high-quality women&apos;s footwear designed for everyday elegance.
+              {brand.description}
             </motion.p>
             
             {/* 4. Micro Trust Row */}
@@ -130,15 +132,15 @@ export default function Home() {
               className="flex flex-wrap justify-center items-center gap-3 sm:gap-6 mb-12"
             >
               <div className="flex items-center text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#C6FF00] drop-shadow-md">
-                <Truck className="h-4 w-4 mr-2" /> Fast Delivery Across Kenya
+                <Truck className="h-4 w-4 mr-2" /> {brand.trustStatements[0]}
               </div>
               <span className="text-[#C6FF00]/40 text-xs hidden sm:block">•</span>
               <div className="flex items-center text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#C6FF00] drop-shadow-md">
-                <ShieldCheck className="h-4 w-4 mr-2" /> Quality Checked
+                <ShieldCheck className="h-4 w-4 mr-2" /> {brand.trustStatements[1]}
               </div>
                <span className="text-[#C6FF00]/40 text-xs hidden sm:block">•</span>
                <div className="hidden sm:flex items-center text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#C6FF00] drop-shadow-md">
-                <MessageCircle className="h-4 w-4 mr-2" /> WhatsApp Ordering
+                <MessageCircle className="h-4 w-4 mr-2" /> {brand.trustStatements[2]}
               </div>
             </motion.div>
 
@@ -183,7 +185,7 @@ export default function Home() {
               <Link 
                 href={`/shop?category=${collection.slug}`} 
                 key={idx} 
-                className={`relative min-w-[85vw] sm:min-w-[60vw] md:min-w-0 ${collection.span} h-[420px] md:h-[500px] snap-center overflow-hidden group bg-neutral-900 border border-white/5`}
+                className={`relative min-w-[85vw] sm:min-w-[60vw] md:min-w-0 ${collection.span} h-[420px] md:h-[500px] snap-center overflow-hidden group rounded-md bg-neutral-900 border border-white/5`}
               >
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition-colors duration-500 z-10" />
                 <Image
@@ -194,7 +196,7 @@ export default function Home() {
                   className="object-cover transition-transform duration-1000 group-hover:scale-110 opacity-80 group-hover:opacity-100"
                 />
                 
-                <div className="absolute inset-x-0 top-0 p-6 z-20 flex justify-between items-start opacity-100 transition-opacity">
+                <div className="absolute inset-x-0 top-0 p-6 z-20 flex justify-between items-start opacity-100 transition-opacity rounded-md">
                    <div className="bg-[#C6FF00] text-black text-[10px] sm:text-xs font-bold px-3 py-1.5 uppercase tracking-widest">
                      {collection.label}
                    </div>
@@ -224,11 +226,11 @@ export default function Home() {
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
               <div className="w-full md:w-auto">
                 <div className="flex flex-wrap items-center gap-4 mb-4">
-                  <div className="bg-[#FF6B00] text-white text-xs font-bold px-4 py-2 uppercase tracking-widest flex items-center animate-pulse">
+                  <div className="bg-[#FF6B00] text-white text-xs font-bold px-4 py-2 uppercase tracking-widest flex items-center animate-pulse  rounded-md">
                      <Zap className="h-4 w-4 mr-2" /> Live Now
                   </div>
-                  <div className="flex items-center text-[#FF6B00] font-mono text-xl sm:text-2xl lg:text-3xl font-bold bg-[#FF6B00]/10 px-4 py-2 border border-[#FF6B00]/30 shadow-[0_0_15px_rgba(255,107,0,0.2)]">
-                    <Clock className="h-6 w-6 mr-3" />
+                  <div className="flex items-center text-[#FF6B00] font-mono text-xs sm:text-2xl lg:text-3xl font-bold rounded-md bg-[#FF6B00]/10 px-4 py-2 border border-[#FF6B00]/30 shadow-[0_0_15px_rgba(255,107,0,0.2)]">
+                    <Clock className="h-5 w-5 mr-3" />
                     <span>{formatTime(timeLeft)}</span>
                   </div>
                 </div>
@@ -239,7 +241,7 @@ export default function Home() {
                   <Flame className="h-4 w-4 mr-2" /> Grab your favorite styles before they&apos;re gone.
                 </p>
               </div>
-              <Link href="/shop?category=deals" className="mt-8 md:mt-0 h-14 px-8 bg-transparent border-2 border-[#FF6B00] text-[#FF6B00] font-bold hover:bg-[#FF6B00] hover:text-white transition-colors flex items-center justify-center uppercase tracking-widest text-sm">
+              <Link href="/shop?category=deals" className="mt-8 md:mt-0 h-8 px-8 bg-transparent border-2 border-white text-white font-bold hover:bg-white hover:text-[#FF6B00] rounded-md transition-colors flex items-center justify-center uppercase tracking-widest text-sm">
                 View All Deals <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </div>
@@ -253,17 +255,17 @@ export default function Home() {
                 const viewing = (product.id.charCodeAt(product.id.length - 1) % 15) + 5; // 5 to 19 viewing
                 
                 return (
-                 <div key={product.id} className="relative min-w-[75vw] sm:min-w-[45vw] md:min-w-0 snap-center group flex flex-col bg-[#0E0E0E] border border-white/10 hover:border-[#FF6B00] transition-colors overflow-hidden">
-                  <Link href={`/product/${product.id}`} className="block relative aspect-[4/5] bg-black overflow-hidden group-hover:opacity-90 transition-opacity">
+                 <div key={product.id} className="relative min-w-[75vw] sm:min-w-[45vw] md:min-w-0 snap-center group flex flex-col bg-[#0E0E0E] border border-white/10 hover:border-[#FF6B00] transition-colors overflow-hidden rounded-md">
+                  <Link href={`/product/${product.id}`} className="block relative aspect-[4/3] bg-black overflow-hidden group-hover:opacity-90 transition-opacity rounded-md">
                     {/* Discount Badge */}
                     {product.originalPrice && (
-                      <div className="absolute top-4 left-4 z-20 bg-[#FF6B00] text-white text-lg font-display uppercase tracking-widest px-3 py-1 shadow-[0_0_20px_rgba(255,107,0,0.4)]">
+                      <div className="absolute top-2 left-2 z-20 rounded-md bg-[#FF6B00] text-white text-sm font-display uppercase tracking-widest px-3 py-1 shadow-[0_0_20px_rgba(255,107,0,0.4)]">
                         -{Math.round((1 - product.price / product.originalPrice) * 100)}%
                       </div>
                     )}
                     
                     {/* Social Proof Badge */}
-                     <div className="absolute top-4 right-4 z-20 bg-black/60 backdrop-blur-md text-white border border-white/10 text-[10px] sm:text-xs font-bold px-3 py-1.5 uppercase tracking-widest flex items-center">
+                     <div className="absolute top-2 right-2 z-20 bg-black/60 backdrop-blur-md text-white border rounded-md border-white/10 text-[10px] sm:text-xs font-bold px-3 py-1.5 uppercase tracking-widest flex items-center">
                        <Eye className="h-3 w-3 mr-1.5 text-[#C6FF00]" /> {viewing} viewing
                      </div>
 
@@ -278,22 +280,22 @@ export default function Home() {
                   
                   {/* Stock Indicator Progress Bar */}
                   <div className="px-5 pt-4">
-                    <div className="flex justify-between text-xs font-bold uppercase tracking-widest text-[#FF6B00] mb-2">
+                    <div className="flex justify-between text-xs uppercase tracking-widest text-[#FF6B00] mb-2">
                        <span>Almost Sold Out</span>
                        <span>Only {stockLeft} left</span>
                     </div>
-                    <div className="w-full bg-white/10 h-1.5">
-                       <div className="bg-[#FF6B00] h-full animate-pulse" style={{ width: `${(stockLeft / 10) * 100}%` }}></div>
+                    <div className="w-full bg-white/10 h-1.5 rounded-full">
+                       <div className="bg-[#FF6B00] h-full rounded-full" style={{ width: `${(stockLeft / 10) * 100}%` }}></div>
                     </div>
                   </div>
 
                   <div className="px-5 pt-4 pb-0 flex flex-col">
                     <Link href={`/product/${product.id}`}>
-                      <h3 className="font-poppins font-semibold text-xl text-white line-clamp-1 group-hover:text-[#FF6B00] transition-colors">
+                      <h3 className="font-poppins font-semibold text-md text-white group-hover:text-[#FF6B00] transition-colors">
                         {product.name}
                       </h3>
                       <div className="mt-2 flex items-center gap-3">
-                        <span className="font-display tracking-widest text-3xl text-[#C6FF00]">{formatPrice(product.price)}</span>
+                        <span className="font-display tracking-widest text-xl text-[#C6FF00]">{formatPrice(product.price)}</span>
                         {product.originalPrice && (
                           <span className="text-gray-500 font-semibold line-through text-sm">{formatPrice(product.originalPrice)}</span>
                         )}
@@ -302,11 +304,11 @@ export default function Home() {
                   </div>
                   
                   {/* Action Buttons (Sticky on mobile, hover lift on desktop) */}
-                  <div className="p-5 mt-auto flex flex-col gap-2 relative z-30">
+                  <div className="p-3 mt-auto flex flex-col gap-2 relative z-30 rounded-xl">
                        <a 
                         href={`https://wa.me/${brand.whatsappNumber}?text=I'm interested in the flash deal for ${product.name}`}
                         target="_blank" rel="noreferrer"
-                        className="w-full bg-[#25D366] text-white font-bold py-3.5 hover:bg-[#1EBE5A] transition-colors flex justify-center items-center uppercase tracking-widest text-sm"
+                        className="w-full bg-[#25D366] text-white font-bold py-2.5 hover:bg-[#1EBE5A] transition-colors flex justify-center items-center uppercase tracking-widest text-xs"
                        >
                          <MessageCircle className="h-4 w-4 mr-2" /> Order On WhatsApp
                        </a>
@@ -337,7 +339,7 @@ export default function Home() {
               <h2 className="font-display uppercase tracking-wide text-5xl md:text-7xl text-white">Latest Styles</h2>
               <p className="text-gray-400 mt-4 max-w-xl font-medium text-base md:text-lg">Fresh styles added weekly — be the first to own them.</p>
             </div>
-            <Link href="/shop?category=new-arrivals" className="mt-8 md:mt-0 h-14 px-8 border border-white/20 text-white font-bold hover:bg-white hover:text-black transition-colors flex items-center justify-center uppercase tracking-widest text-sm group">
+            <Link href="/shop?category=new-arrivals" className="mt-8 md:mt-0 h-12 px-8 border border-white/20 text-white font-bold hover:bg-white hover:text-black transition-colors flex items-center justify-center uppercase tracking-widest text-sm group rounded-md">
               View All Arrivals <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
@@ -345,10 +347,7 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             {newArrivals.map((product) => (
               <div key={product.id} className="group flex flex-col bg-transparent lg:hover:-translate-y-2 transition-transform duration-500">
-                <Link href={`/product/${product.id}`} className="relative aspect-[3/4] bg-neutral-900 border border-white/10 overflow-hidden mb-5 block">
-                  <div className="absolute top-4 left-4 z-20 bg-white text-black text-[10px] font-bold px-3 py-1.5 uppercase tracking-widest shadow-xl flex items-center">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C6FF00] mr-2 animate-pulse" /> JUST DROPPED
-                  </div>
+                <Link href={`/product/${product.id}`} className="relative aspect-[3/4] bg-neutral-900 border border-white/10 overflow-hidden mb-5 block rounded-md">
                   <Image
                     src={product.image}
                     alt={product.name}
@@ -358,20 +357,20 @@ export default function Home() {
                   />
                   
                   {/* Desktop Quick Actions - Reveal on Hover */}
-                  <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20 hidden lg:flex flex-col gap-2">
+                  <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform rounded-md duration-300 z-20 hidden lg:flex flex-col gap-2">
                      <a 
                       href={`https://wa.me/${brand.whatsappNumber}?text=I'm interested in the new arrival: ${product.name}`}
                       target="_blank" rel="noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="w-full bg-[#25D366] text-white font-bold py-3 hover:bg-[#1EBE5A] transition-colors flex justify-center items-center uppercase tracking-widest text-xs"
+                      className="w-full bg-[#25D366] text-white font-bold py-3 hover:bg-[#1EBE5A] transition-colors flex justify-center items-center uppercase tracking-widest text-xs rounded-md"
                      >
-                       <MessageCircle className="h-4 w-4 mr-2" /> WhatsApp Order
+                       <MessageCircle className="h-4 w-4 mr-2" /> Order on WhatsApp
                      </a>
                      <button 
                       onClick={(e) => { e.preventDefault(); addToCart(product, product.sizes[0] || '38'); }}
-                      className="w-full bg-black/50 backdrop-blur-sm border border-white/20 text-white font-bold py-2.5 hover:bg-white hover:text-black transition-colors flex justify-center items-center uppercase tracking-widest text-xs"
+                      className="w-full bg-black/50 backdrop-blur-sm border border-white/20 text-white font-bold py-2.5 hover:bg-white rounded-md hover:text-black transition-colors flex justify-center items-center uppercase tracking-widest text-xs"
                      >
-                       Add to Bag
+                       Add to Cart
                      </button>
                   </div>
                 </Link>
@@ -394,15 +393,15 @@ export default function Home() {
                      <a 
                       href={`https://wa.me/${brand.whatsappNumber}?text=I'm interested in the new arrival: ${product.name}`}
                       target="_blank" rel="noreferrer"
-                      className="w-full bg-[#25D366] text-white font-bold py-3 transition-colors flex justify-center items-center uppercase tracking-widest text-[10px]"
+                      className="w-full bg-[#25D366] text-white font-bold py-2 rounded-md transition-colors flex justify-center items-center uppercase tracking-widest text-[9px]"
                      >
-                       <MessageCircle className="h-3 w-3 mr-2" /> WhatsApp Order
+                       <MessageCircle className="h-3 w-3 mr-2" /> Order on WhatsApp
                      </a>
                      <button 
                       onClick={() => addToCart(product, product.sizes[0] || '38')}
-                      className="w-full bg-transparent border border-white/20 text-white font-bold py-2.5 transition-colors flex justify-center items-center uppercase tracking-widest text-[10px]"
+                      className="w-full bg-transparent border border-white/20 text-white font-bold py-2 rounded-md transition-colors flex justify-center items-center uppercase tracking-widest text-[10px]"
                      >
-                       Bag It
+                       Add to Cart
                      </button>
                   </div>
                 </div>
@@ -424,7 +423,7 @@ export default function Home() {
               <h2 className="font-display uppercase tracking-wide text-5xl md:text-7xl text-white">BEST SELLERS</h2>
               <p className="text-gray-400 mt-4 max-w-xl font-medium text-base md:text-lg">Trusted and loved by hundreds of happy customers across Kenya.</p>
             </div>
-            <Link href="/shop?category=best-sellers" className="mt-8 md:mt-0 h-14 px-8 border border-white/20 text-white font-bold hover:bg-white hover:text-black transition-colors flex items-center justify-center uppercase tracking-widest text-sm group">
+            <Link href="/shop?category=best-sellers" className="mt-6 md:mt-0 h-12 px-8 border border-white/20 text-white font-bold hover:bg-white hover:text-black transition-colors flex items-center justify-center uppercase tracking-widest text-sm group rounded-md">
               View All Favorites <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
@@ -432,12 +431,7 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             {bestSellers.slice(0, 4).map((product) => (
               <div key={product.id} className="group flex flex-col bg-transparent">
-                <Link href={`/product/${product.id}`} className="relative aspect-[4/5] bg-neutral-900 border border-white/10 overflow-hidden mb-5 block group-hover:border-[#FF6B00] transition-colors rounded-none">
-                  {/* Badge */}
-                  <div className="absolute top-4 left-4 z-20 bg-white text-black text-[10px] font-bold px-3 py-1.5 uppercase tracking-widest shadow-xl flex items-center">
-                    <Flame className="w-3 h-3 mr-1.5 text-[#FF6B00]" /> BEST SELLER
-                  </div>
-                  
+                <Link href={`/product/${product.id}`} className="relative aspect-[4/5] bg-neutral-900 border border-white/10 overflow-hidden mb-5 block group-hover:border-[#FF6B00] transition-colors rounded-md">                  
                   <Image
                     src={product.image}
                     alt={product.name}
@@ -452,7 +446,7 @@ export default function Home() {
                       href={`https://wa.me/${brand.whatsappNumber}?text=I'm interested in your best seller: ${product.name}`}
                       target="_blank" rel="noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="w-full bg-[#25D366] text-white font-bold py-3 hover:bg-[#1EBE5A] transition-colors flex justify-center items-center uppercase tracking-widest text-xs"
+                      className="w-full bg-[#25D366] text-white font-bold py-2 hover:bg-[#1EBE5A] transition-colors flex justify-center items-center uppercase tracking-widest text-xs"
                      >
                        <MessageCircle className="h-4 w-4 mr-2" /> Order On WhatsApp
                      </a>
@@ -479,15 +473,15 @@ export default function Home() {
                       {product.name}
                     </h3>
                   </Link>
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="font-display tracking-widest text-xl text-white">{formatPrice(product.price)}</span>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="font-display tracking-widest text-sm text-white">{formatPrice(product.price)}</span>
                     {product.originalPrice && (
                        <span className="text-gray-500 font-semibold line-through text-xs sm:text-sm">{formatPrice(product.originalPrice)}</span>
                     )}
                   </div>
                   
                   <div className="text-[9px] sm:text-[10px] text-gray-400 uppercase tracking-widest mb-4 flex items-center">
-                    <ShoppingBag className="h-3 w-3 mr-1 text-gray-500" /> 200+ sold this week
+                    <ShoppingBag className="h-3 w-3 mr-1 text-gray-500" /> {brand.salesCallout}
                   </div>
 
                   {/* Mobile Quick Actions */}
@@ -495,13 +489,13 @@ export default function Home() {
                      <a 
                       href={`https://wa.me/${brand.whatsappNumber}?text=I'm interested in your best seller: ${product.name}`}
                       target="_blank" rel="noreferrer"
-                      className="w-full bg-[#25D366] text-white font-bold py-3 transition-colors flex justify-center items-center uppercase tracking-widest text-[10px]"
+                      className="w-full bg-[#25D366] text-white font-bold py-2 rounded-md transition-colors flex justify-center items-center uppercase tracking-widest text-[9px]"
                      >
-                       <MessageCircle className="h-3 w-3 mr-2" /> WhatsApp Order
+                       <MessageCircle className="h-3 w-3 mr-2" /> Order on WhatsApp
                      </a>
                      <button 
                       onClick={() => addToCart(product, product.sizes[0] || '38')}
-                      className="w-full bg-transparent border border-white/20 text-white font-bold py-2.5 transition-colors flex justify-center items-center uppercase tracking-widest text-[10px]"
+                      className="w-full bg-transparent border border-white/20 text-white font-bold py-2 rounded-md transition-colors flex justify-center items-center uppercase tracking-widest text-[10px]"
                      >
                        Add to Cart
                      </button>
@@ -529,46 +523,46 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {/* Feature 1 */}
-            <div className="bg-[#0E0E0E] min-h-[220px] p-8 md:p-10 border border-white/5 hover:border-[#C6FF00]/50 transition-all duration-300 group cursor-default">
-              <div className="bg-white/5 w-14 h-14 flex items-center justify-center mb-6 group-hover:bg-[#C6FF00]/10 transition-colors">
+            <div className="bg-[#0E0E0E] min-h-[220px] p-8 md:p-10 border border-white/5 hover:border-[#C6FF00]/50 transition-all duration-300 group cursor-default rounded-md">
+              <div className="bg-white/5 w-14 h-14 flex items-center justify-center mb-6 group-hover:bg-[#C6FF00]/10 transition-colors rounded-md">
                 <Star className="h-6 w-6 text-white group-hover:text-[#C6FF00] transition-colors" />
               </div>
-              <h3 className="font-display tracking-widest uppercase text-xl text-white mb-3">Premium Quality</h3>
+              <h3 className="font-display tracking-widest uppercase text-xl text-white mb-3">{brand.features[0].title}</h3>
               <p className="text-gray-400 text-sm leading-relaxed">
-                Every pair is carefully selected to ensure comfort, durability, and modern style.
+                {brand.features[0].description}
               </p>
             </div>
 
             {/* Feature 2 */}
-            <div className="bg-[#0E0E0E] min-h-[220px] p-8 md:p-10 border border-white/5 hover:border-[#C6FF00]/50 transition-all duration-300 group cursor-default">
-              <div className="bg-white/5 w-14 h-14 flex items-center justify-center mb-6 group-hover:bg-[#C6FF00]/10 transition-colors">
+            <div className="bg-[#0E0E0E] min-h-[220px] p-8 md:p-10 border border-white/5 hover:border-[#C6FF00]/50 transition-all duration-300 group cursor-default rounded-md">
+              <div className="bg-white/5 w-14 h-14 flex items-center justify-center mb-6 group-hover:bg-[#C6FF00]/10 transition-colors rounded-md">
                 <Wallet className="h-6 w-6 text-white group-hover:text-[#C6FF00] transition-colors" />
               </div>
-              <h3 className="font-display tracking-widest uppercase text-xl text-white mb-3">Affordable Prices</h3>
+              <h3 className="font-display tracking-widest uppercase text-xl text-white mb-3">{brand.features[1].title}</h3>
               <p className="text-gray-400 text-sm leading-relaxed">
-                Get stylish footwear without overspending — value for money guaranteed.
+                {brand.features[1].description}
               </p>
             </div>
 
             {/* Feature 3 */}
-            <div className="bg-[#0E0E0E] min-h-[220px] p-8 md:p-10 border border-white/5 hover:border-[#C6FF00]/50 transition-all duration-300 group cursor-default">
-              <div className="bg-white/5 w-14 h-14 flex items-center justify-center mb-6 group-hover:bg-[#C6FF00]/10 transition-colors">
+            <div className="bg-[#0E0E0E] min-h-[220px] p-8 md:p-10 border border-white/5 hover:border-[#C6FF00]/50 transition-all duration-300 group cursor-default rounded-md">
+              <div className="bg-white/5 w-14 h-14 flex items-center justify-center mb-6 group-hover:bg-[#C6FF00]/10 transition-colors rounded-md">
                 <Truck className="h-6 w-6 text-white group-hover:text-[#C6FF00] transition-colors" />
               </div>
-              <h3 className="font-display tracking-widest uppercase text-xl text-white mb-3">Fast Delivery</h3>
+              <h3 className="font-display tracking-widest uppercase text-xl text-white mb-3">{brand.features[2].title}</h3>
               <p className="text-gray-400 text-sm leading-relaxed">
-                We process and deliver orders promptly so you receive your items as fast as possible across Kenya.
+                {brand.features[2].description}
               </p>
             </div>
 
             {/* Feature 4 */}
-            <div className="bg-[#0E0E0E] min-h-[220px] p-8 md:p-10 border border-white/5 hover:border-[#C6FF00]/50 transition-all duration-300 group cursor-default">
-              <div className="bg-white/5 w-14 h-14 flex items-center justify-center mb-6 group-hover:bg-[#C6FF00]/10 transition-colors">
+            <div className="bg-[#0E0E0E] min-h-[220px] p-8 md:p-10 border border-white/5 hover:border-[#C6FF00]/50 transition-all duration-300 group cursor-default rounded-md">
+              <div className="bg-white/5 w-14 h-14 flex items-center justify-center mb-6 group-hover:bg-[#C6FF00]/10 transition-colors rounded-md">
                 <MessageCircle className="h-6 w-6 text-white group-hover:text-[#25D366] transition-colors" />
               </div>
-              <h3 className="font-display tracking-widest uppercase text-xl text-white mb-3">WhatsApp Ordering</h3>
+              <h3 className="font-display tracking-widest uppercase text-xl text-white mb-3">{brand.features[3].title}</h3>
               <p className="text-gray-400 text-sm leading-relaxed">
-                No complicated checkout — just message us and place your order instantly.
+                {brand.features[3].description}
               </p>
             </div>
           </div>
@@ -587,15 +581,15 @@ export default function Home() {
               <h2 className="font-display uppercase tracking-wide text-4xl md:text-6xl text-white mb-6">WHAT OUR <br className="hidden md:block"/>CUSTOMERS SAY</h2>
               <div className="flex items-center gap-4 mt-6">
                 <div className="flex -space-x-3">
-                  <Image src="https://picsum.photos/seed/user1/100/100" width={40} height={40} className="w-10 h-10 rounded-full border-2 border-white object-cover" alt="User 1" />
-                  <Image src="https://picsum.photos/seed/user2/100/100" width={40} height={40} className="w-10 h-10 rounded-full border-2 border-white object-cover" alt="User 2" />
-                  <Image src="https://picsum.photos/seed/user3/100/100" width={40} height={40} className="w-10 h-10 rounded-full border-2 border-white object-cover" alt="User 3" />
+                  {reviewAvatars.map((src, idx) => (
+                    <Image key={idx} src={src} width={40} height={40} className="w-10 h-10 rounded-full border-2 border-white object-cover" alt={`User ${idx + 1}`} />
+                  ))}
                 </div>
                 <div>
                   <div className="flex text-[#FF6B00] mb-1">
                     {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-current" />)}
                   </div>
-                  <p className="text-white text-[10px] sm:text-xs font-bold tracking-widest uppercase">4.8/5 Average Rating • 500+ Happy Customers</p>
+                  <p className="text-white text-[10px] sm:text-xs font-bold tracking-widest uppercase">{reviewStats.averageRating} • {reviewStats.totalCustomers}</p>
                 </div>
               </div>
             </div>
@@ -606,14 +600,14 @@ export default function Home() {
             style={{ scrollbarWidth: 'none' }}
           >
             {testimonials.map((review) => (
-              <div key={review.id} className="min-w-[85vw] sm:min-w-[400px] md:min-w-0 snap-center bg-[#0E0E0E] border border-white/5 hover:border-[#C6FF00]/30 p-8 flex flex-col group lg:hover:-translate-y-2 transition-all duration-500">
+              <div key={review.id} className="min-w-[85vw] sm:min-w-[400px] md:min-w-0 snap-center bg-[#0E0E0E] border border-white/5 hover:border-[#C6FF00]/30 p-3 flex flex-col group rounded-md lg:hover:-translate-y-2 transition-all duration-500">
                 <div className="flex justify-between items-start mb-6">
                   <div className="flex text-[#FF6B00]">
                     {[...Array(5)].map((_, i) => (
                        <Star key={i} className={`w-4 h-4 ${i < Math.floor(review.rating) ? 'fill-current' : 'text-gray-600'}`} />
                     ))}
                   </div>
-                  <div className="bg-[#25D366]/10 text-[#25D366] text-[10px] font-bold px-2 py-1 uppercase tracking-widest flex items-center border border-[#25D366]/20">
+                  <div className="bg-[#25D366]/10 text-[#25D366] text-[10px] right-3 font-bold px-2 py-1 uppercase rounded-md tracking-widest flex items-center border border-[#25D366]/20">
                     <CheckCircle className="w-3 h-3 mr-1" /> Verified WhatsApp Order
                   </div>
                 </div>
@@ -670,19 +664,19 @@ export default function Home() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12 w-full max-w-lg">
                 <div className="flex items-center text-gray-300">
                    <Clock className="w-5 h-5 text-[#C6FF00] mr-3" />
-                   <span className="font-medium text-sm">Fast response within minutes</span>
+                   <span className="font-medium text-sm">{brand.whatsappTrustSignals[0]}</span>
                 </div>
                 <div className="flex items-center text-gray-300">
                    <ShieldCheck className="w-5 h-5 text-[#C6FF00] mr-3" />
-                   <span className="font-medium text-sm">Secure and reliable</span>
+                   <span className="font-medium text-sm">{brand.whatsappTrustSignals[1]}</span>
                 </div>
                 <div className="flex items-center text-gray-300">
                    <Truck className="w-5 h-5 text-[#C6FF00] mr-3" />
-                   <span className="font-medium text-sm">Quick delivery available</span>
+                   <span className="font-medium text-sm">{brand.whatsappTrustSignals[2]}</span>
                 </div>
                 <div className="flex items-center text-gray-300">
                    <CheckCircle className="w-5 h-5 text-[#C6FF00] mr-3" />
-                   <span className="font-medium text-sm">Trusted across Kenya</span>
+                   <span className="font-medium text-sm">{brand.whatsappTrustSignals[3]}</span>
                 </div>
               </div>
 
@@ -692,7 +686,7 @@ export default function Home() {
                   href={`https://wa.me/${brand.whatsappNumber}?text=${encodeURIComponent(brand.whatsappMessage.general)}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex h-16 sm:h-20 px-8 sm:px-12 bg-[#25D366] text-white font-bold text-lg items-center justify-center hover:bg-[#1EBE5A] transition-all hover:scale-105 uppercase tracking-widest group shadow-[0_0_40px_-10px_rgba(37,211,102,0.4)]"
+                  className="inline-flex h-14 sm:h-16 px-5 sm:px-8 bg-[#25D366] text-white font-bold text-md rounded-md items-center justify-center hover:bg-[#1EBE5A] transition-all hover:scale-105 uppercase tracking-widest group shadow-[0_0_40px_-10px_rgba(37,211,102,0.4)]"
                 >
                   <MessageCircle className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
                   Order on WhatsApp
@@ -711,7 +705,7 @@ export default function Home() {
                      <span className="font-display text-white text-lg">DS</span>
                    </div>
                    <div>
-                     <p className="text-white font-bold text-sm">Diva Steps Collection</p>
+                     <p className="text-white font-bold text-sm">{brand.name}</p>
                      <p className="text-[#25D366] text-xs font-medium">Online</p>
                    </div>
                    <MessageCircle className="w-5 h-5 text-gray-500 ml-auto" />
@@ -720,35 +714,29 @@ export default function Home() {
                 {/* Chat Body */}
                 <div className="p-6 pb-20 space-y-4 bg-black/20">
                    
-                   <div className="flex w-full mt-2 space-x-3 max-w-xs">
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center mt-auto border border-white/10">
-                         <span className="font-display text-white text-xs">DS</span>
-                      </div>
-                      <div className="bg-[#242424] p-4 rounded-2xl rounded-bl-sm border border-white/5 shadow-md">
-                         <p className="text-white text-sm">Hello! Welcome to Diva Steps. What style are you looking for today? 👠✨</p>
-                         <p className="text-gray-500 text-[10px] text-right mt-1">10:02 AM</p>
-                      </div>
-                   </div>
-
-                   <div className="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
-                      <div className="bg-[#005C4B] p-4 rounded-2xl rounded-br-sm border border-[#005C4B]/50 shadow-md">
-                         <p className="text-white text-sm">Hi, I want to order the Black Heels in size 39. Are they available?</p>
-                         <div className="flex justify-end items-center mt-1 space-x-1">
-                            <p className="text-white/60 text-[10px]">10:05 AM</p>
-                            <CheckCircle className="w-3 h-3 text-[#53bdeb]" />
-                         </div>
-                      </div>
-                   </div>
-
-                   <div className="flex w-full mt-2 space-x-3 max-w-xs">
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center mt-auto border border-white/10">
-                         <span className="font-display text-white text-xs">DS</span>
-                      </div>
-                      <div className="bg-[#242424] p-4 rounded-2xl rounded-bl-sm border border-white/5 shadow-md">
-                         <p className="text-white text-sm">Yes, they are! We can deliver today within Nairobi.</p>
-                         <p className="text-gray-500 text-[10px] text-right mt-1">10:06 AM</p>
-                      </div>
-                   </div>
+                   {brand.whatsappMockChat.map((msg, idx) => (
+                      msg.sender === 'brand' ? (
+                        <div key={idx} className="flex w-full mt-2 space-x-3 max-w-xs">
+                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center mt-auto border border-white/10">
+                             <span className="font-display text-white text-xs">DS</span>
+                          </div>
+                          <div className="bg-[#242424] p-4 rounded-2xl rounded-bl-sm border border-white/5 shadow-md">
+                             <p className="text-white text-sm">{msg.text}</p>
+                             <p className="text-gray-500 text-[10px] text-right mt-1">{msg.time}</p>
+                          </div>
+                       </div>
+                      ) : (
+                        <div key={idx} className="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
+                          <div className="bg-[#005C4B] p-4 rounded-2xl rounded-br-sm border border-[#005C4B]/50 shadow-md">
+                             <p className="text-white text-sm">{msg.text}</p>
+                             <div className="flex justify-end items-center mt-1 space-x-1">
+                                <p className="text-white/60 text-[10px]">{msg.time}</p>
+                                <CheckCircle className="w-3 h-3 text-[#53bdeb]" />
+                             </div>
+                          </div>
+                       </div>
+                      )
+                   ))}
 
                 </div>
 

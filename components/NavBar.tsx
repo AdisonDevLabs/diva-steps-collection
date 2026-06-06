@@ -1,3 +1,5 @@
+// components/NavBar.tsx
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -6,6 +8,7 @@ import { Search, Heart, ShoppingBag, Menu, X, Home, Grid, Tag } from 'lucide-rea
 import { useCart } from '@/lib/CartContext';
 import { motion, AnimatePresence } from 'motion/react';
 import { brand } from '@/lib/data/brand';
+import { navSearchSuggestions, navLinksData } from '@/lib/data/categories';
 import { AnnouncementBar } from './AnnouncementBar';
 
 export function NavBar() {
@@ -37,7 +40,7 @@ export function NavBar() {
     <>
       <AnnouncementBar />
       {/* Desktop Header & Mobile Top Bar */}
-      <header className={`fixed top-10 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-[#0E0E0E]/95 backdrop-blur-md shadow-2xl py-1 border-b border-white/5' : 'bg-transparent py-3 border-b border-white/10'}`}>
+      <header className={`fixed top-10 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-[#0E0E0E]/95 backdrop-blur-md shadow-2xl py-1 border-b border-white/5' : 'bg-transparent py-1 border-b border-white/10'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-14 md:h-[60px]">
             {/* Logo */}
@@ -54,23 +57,15 @@ export function NavBar() {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <Link href="/shop" className="text-[11px] uppercase tracking-widest font-bold text-white hover:text-[#C6FF00] transition-colors relative group">
-                Shop All
-                <span className="absolute -bottom-1.5 left-0 w-0 h-px bg-[#C6FF00] transition-all group-hover:w-full"></span>
-              </Link>
-              <Link href="/shop?category=new-arrivals" className="text-[11px] uppercase tracking-widest font-bold text-gray-400 hover:text-white transition-colors relative group">
-                New Drops
-                <span className="absolute -bottom-1.5 left-0 w-0 h-px bg-white transition-all group-hover:w-full"></span>
-              </Link>
-              <Link href="/shop?category=trending" className="text-[11px] uppercase tracking-widest font-bold text-gray-400 hover:text-white transition-colors relative group">
-                Trending
-                <span className="absolute -bottom-1.5 left-0 w-0 h-px bg-white transition-all group-hover:w-full"></span>
-              </Link>
-              <Link href="/shop?category=deals" className="text-[11px] uppercase tracking-widest font-bold text-gray-400 hover:text-[#FF0000] transition-colors relative group flex items-center">
-                Deals
-                <span className="ml-2 bg-[#FF0000] text-white text-[9px] px-1.5 py-0.5 rounded-sm animate-pulse flex items-center leading-none">LIVE</span>
-                <span className="absolute -bottom-1.5 left-0 w-0 h-px bg-[#FF0000] transition-all group-hover:w-full"></span>
-              </Link>
+              {navLinksData.map((link, idx) => (
+                <Link key={idx} href={link.href} className={`text-[11px] uppercase tracking-widest font-bold ${link.baseTextClass} ${link.hoverTextClass} transition-colors relative group ${link.isLive ? 'flex items-center' : ''}`}>
+                  {link.label}
+                  {link.isLive && (
+                    <span className="ml-2 bg-[#FF0000] text-white text-[9px] px-1.5 py-0.5 rounded-sm animate-pulse flex items-center leading-none">LIVE</span>
+                  )}
+                  <span className={`absolute -bottom-1.5 left-0 w-0 h-px transition-all group-hover:w-full ${link.underlineClass}`}></span>
+                </Link>
+              ))}
             </nav>
 
             {/* Actions */}
@@ -108,9 +103,11 @@ export function NavBar() {
                       <div className="mt-4">
                         <p className="text-[10px] uppercase tracking-widest text-[#C6FF00] mb-3 font-bold">Suggested</p>
                         <div className="flex flex-wrap gap-2">
-                          <span className="text-xs bg-white/5 hover:bg-white/10 px-3 py-1.5 cursor-pointer transition-colors text-white rounded-full">Sneakers</span>
-                          <span className="text-xs bg-white/5 hover:bg-white/10 px-3 py-1.5 cursor-pointer transition-colors text-white rounded-full">Heels</span>
-                          <span className="text-xs bg-white/5 hover:bg-white/10 px-3 py-1.5 cursor-pointer transition-colors text-white rounded-full">New Arrivals</span>
+                          {navSearchSuggestions.map((suggestion, idx) => (
+                            <span key={idx} className="text-xs bg-white/5 hover:bg-white/10 px-3 py-1.5 cursor-pointer transition-colors text-white rounded-full">
+                              {suggestion}
+                            </span>
+                          ))}
                         </div>
                       </div>
                     </motion.div>
@@ -162,7 +159,7 @@ export function NavBar() {
       {/* Floating WhatsApp Button (Hidden on Desktop, shown on Mobile outside bottom nav if needed, but we put it IN bottom nav) */}
 
       {/* Mobile Bottom Navigation Hub */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[#0A0A0A]/95 backdrop-blur-lg border-t border-white/5 px-6 py-2 z-50 pb-safe">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[#0A0A0A]/95 backdrop-blur-lg border-t border-white/5 px-6 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] z-50">
         <div className="flex justify-between items-center mb-1">
           <Link href="/" className="flex flex-col items-center space-y-1 text-gray-400 hover:text-white transition-colors w-12">
             <Home className="h-5 w-5" />
@@ -175,7 +172,7 @@ export function NavBar() {
           <div className="relative -top-6">
             <button 
               onClick={() => setIsCartOpen(true)}
-              className="bg-[#C6FF00] text-black p-3 rounded-full shadow-[0_0_20px_-5px_rgba(198,255,0,0.5)] flex flex-col items-center justify-center h-14 w-14 border-[3px] border-[#0A0A0A]"
+              className="bg-[#C6FF00] text-black p-3 rounded-full flex flex-col items-center justify-center h-14 w-14 border-[3px] border-[#0A0A0A]"
             >
               <motion.div animate={cartPulse ? { scale: [1, 1.2, 1] } : {}} transition={{ duration: 0.3 }}>
                 <ShoppingBag className="h-5 w-5" />

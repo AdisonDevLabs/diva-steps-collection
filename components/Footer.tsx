@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Truck, ShieldCheck, Wallet, CheckCircle, MessageCircle, Send, Instagram, Facebook } from 'lucide-react';
-import { brand } from '@/lib/data/brand';
+import { brand, footerQuickShopLinks, footerSupportLinks } from '@/lib/data/brand';
 
 export function Footer() {
   return (
@@ -41,11 +41,9 @@ export function Footer() {
           <div className="lg:col-span-2">
             <h4 className="font-display text-white text-lg uppercase tracking-wide mb-6">Quick Shop</h4>
             <ul className="space-y-4">
-              <li><Link href="/shop" className="text-gray-400 hover:text-[#C6FF00] text-sm transition-colors">New Arrivals</Link></li>
-              <li><Link href="/shop?category=best-sellers" className="text-gray-400 hover:text-[#C6FF00] text-sm transition-colors">Best Sellers</Link></li>
-              <li><Link href="/shop" className="text-gray-400 hover:text-[#C6FF00] text-sm transition-colors">Heels</Link></li>
-              <li><Link href="/shop" className="text-gray-400 hover:text-[#C6FF00] text-sm transition-colors">Sneakers</Link></li>
-              <li><Link href="/shop" className="text-gray-400 hover:text-[#C6FF00] text-sm transition-colors">Flats &amp; Sandals</Link></li>
+              {footerQuickShopLinks.map((link, idx) => (
+                <li key={idx}><Link href={link.href} className="text-gray-400 hover:text-[#C6FF00] text-sm transition-colors">{link.label}</Link></li>
+              ))}
             </ul>
           </div>
 
@@ -53,11 +51,9 @@ export function Footer() {
           <div className="lg:col-span-2">
             <h4 className="font-display text-white text-lg uppercase tracking-wide mb-6">Support</h4>
             <ul className="space-y-4">
-              <li><Link href="/how-to-order" className="text-gray-400 hover:text-white text-sm transition-colors">How to Order</Link></li>
-              <li><Link href="/delivery" className="text-gray-400 hover:text-white text-sm transition-colors">Delivery Info</Link></li>
-              <li><Link href="/size-guide" className="text-gray-400 hover:text-white text-sm transition-colors">Size Guide</Link></li>
-              <li><Link href="/returns" className="text-gray-400 hover:text-white text-sm transition-colors">Returns &amp; Exchanges</Link></li>
-              <li><Link href="/faq" className="text-gray-400 hover:text-white text-sm transition-colors">FAQ</Link></li>
+              {footerSupportLinks.map((link, idx) => (
+                <li key={idx}><Link href={link.href} className="text-gray-400 hover:text-white text-sm transition-colors">{link.label}</Link></li>
+              ))}
             </ul>
           </div>
 

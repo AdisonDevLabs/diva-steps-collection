@@ -1,3 +1,5 @@
+// lib/data/testimonials.ts
+
 export interface Testimonial {
   id: string | number;
   name: string;
@@ -62,3 +64,14 @@ export const productReviews: Testimonial[] = [
     profile: "https://picsum.photos/seed/sarah/150/150",
   },
 ];
+
+export const reviewAvatars = [
+  "https://picsum.photos/seed/user1/100/100",
+  "https://picsum.photos/seed/user2/100/100",
+  "https://picsum.photos/seed/user3/100/100"
+];
+
+export const reviewStats = {
+  averageRating: "4.8/5 Average Rating",
+  totalCustomers: "500+ Happy Customers"
+};
