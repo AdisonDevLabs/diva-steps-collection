@@ -1,11 +1,21 @@
+// components/Footer.tsx
+
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Truck, ShieldCheck, Wallet, CheckCircle, MessageCircle, Send, Instagram, Facebook } from 'lucide-react';
 import { brand, footerQuickShopLinks, footerSupportLinks } from '@/lib/data/brand';
 
 export function Footer() {
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubscribed(true);
+    // In production, integrate your email API here
+  };
+
   return (
     <footer className="bg-[#0A0A0A] border-t border-white/10 pt-20 pb-8 relative z-20">
       <div className="max-w-7xl mx-auto px-6">
@@ -19,7 +29,7 @@ export function Footer() {
             <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-sm">
               {brand.description}
             </p>
-            <div className="inline-flex items-center text-[#25D366] text-xs font-bold tracking-widest uppercase bg-[#25D366]/10 px-3 py-1.5 border border-[#25D366]/20 mb-8">
+            <div className="inline-flex items-center text-[#C6FF00] text-xs font-bold tracking-widest uppercase bg-[#C6FF00]/10 px-3 py-1.5 border border-[#C6FF00]/20 mb-8 rounded-md">
                <CheckCircle className="w-3 h-3 mr-2" /> Trusted by customers nationwide
             </div>
             
@@ -61,15 +71,15 @@ export function Footer() {
           <div className="lg:col-span-4">
             <h4 className="font-display text-white text-lg uppercase tracking-wide mb-6">Contact Us</h4>
             
-            <a href={`https://wa.me/${brand.whatsappNumber}?text=I'm%20ready%20to%20place%20an%20order`} target="_blank" rel="noreferrer" className="flex items-center w-full bg-[#25D366] text-white p-4 group mb-6 hover:bg-[#1EBE5A] transition-colors shadow-[0_0_15px_-3px_rgba(37,211,102,0.3)]">
-              <div className="w-10 h-10 bg-white/20 rounded flex items-center justify-center mr-4">
-                <MessageCircle className="w-5 h-5 text-white" />
+            <a href={`https://wa.me/${brand.whatsappNumber}?text=I'm%20ready%20to%20place%20an%20order`} target="_blank" rel="noreferrer" className="flex items-center w-full bg-[#C6FF00] text-black p-4 group mb-6 hover:bg-[#A3D900] transition-colors shadow-[0_0_15px_-3px_rgba(198,255,0,0.3)] rounded-md">
+              <div className="w-10 h-10 bg-black/10 rounded-md flex items-center justify-center mr-4">
+                <MessageCircle className="w-5 h-5 text-black" />
               </div>
               <div className="flex-1 text-left">
-                <p className="text-white font-bold text-sm uppercase tracking-widest leading-none mb-1">Start Order Instantly</p>
-                <p className="text-white/80 text-xs">Chat on WhatsApp</p>
+                <p className="text-black font-bold text-sm uppercase tracking-widest leading-none mb-1">Start Order Instantly</p>
+                <p className="text-black/80 text-xs">Chat on WhatsApp</p>
               </div>
-              <div className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:text-[#25D366] transition-colors">
+              <div className="w-8 h-8 rounded-full border border-black/30 flex items-center justify-center group-hover:bg-black group-hover:text-[#C6FF00] transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
               </div>
             </a>
@@ -78,26 +88,34 @@ export function Footer() {
             <div className="mt-8 pt-8 border-t border-white/5">
               <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-2">Join Our VIP List</h4>
               <p className="text-gray-400 text-xs mb-4">Get early access to new arrivals and exclusive deals.</p>
-              <form className="flex w-full" onSubmit={(e) => e.preventDefault()}>
-                <input type="email" placeholder="Your email address" className="bg-[#1A1A1A] text-white border border-white/10 px-4 py-3 w-full text-sm focus:outline-none focus:border-[#C6FF00] rounded-none placeholder:text-gray-600 transition-colors" />
-                <button type="submit" className="bg-[#C6FF00] text-black px-4 py-3 font-bold text-sm hover:bg-white transition-colors flex items-center justify-center min-w-[50px]">
-                  <Send className="w-4 h-4" />
-                </button>
-              </form>
+              
+              {isSubscribed ? (
+                 <div className="bg-[#C6FF00]/10 border border-[#C6FF00]/20 rounded-md p-4 flex items-center text-[#C6FF00]">
+                   <CheckCircle className="w-5 h-5 mr-3" />
+                   <span className="text-sm font-bold uppercase tracking-widest">You're on the list!</span>
+                 </div>
+              ) : (
+                <form className="flex w-full" onSubmit={handleSubscribe}>
+                  <input type="email" required placeholder="Your email address" className="bg-[#1A1A1A] text-white border border-white/10 px-4 py-3 w-full text-sm focus:outline-none focus:border-[#C6FF00] rounded-l-md placeholder:text-gray-600 transition-colors" />
+                  <button type="submit" className="bg-[#C6FF00] text-black px-4 py-3 font-bold text-sm hover:bg-[#A3D900] transition-colors flex items-center justify-center min-w-[50px] rounded-r-md">
+                    <Send className="w-4 h-4" />
+                  </button>
+                </form>
+              )}
             </div>
 
             {/* Socials */}
             <div className="mt-8 flex items-center gap-4">
-              <a href={brand.socialLinks.tiktok} target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors flex items-center text-xs font-bold tracking-wider uppercase group">
+              <a href={brand.socialLinks.tiktok} target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors flex items-center text-xs font-bold tracking-wider uppercase group rounded-md">
                 TikTok
               </a>
               <span className="text-white/10">•</span>
-              <a href={brand.socialLinks.instagram} target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors flex items-center text-xs font-bold tracking-wider uppercase group">
+              <a href={brand.socialLinks.instagram} target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors flex items-center text-xs font-bold tracking-wider uppercase group rounded-md">
                 <Instagram className="w-3 h-3 mr-1" />
                 Instagram
               </a>
               <span className="text-white/10">•</span>
-              <a href={brand.socialLinks.facebook} target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors flex items-center text-xs font-bold tracking-wider uppercase group">
+              <a href={brand.socialLinks.facebook} target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors flex items-center text-xs font-bold tracking-wider uppercase group rounded-md">
                 <Facebook className="w-3 h-3 mr-1" />
                 Facebook
               </a>

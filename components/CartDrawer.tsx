@@ -1,3 +1,5 @@
+// components/CartDrawer.tsx
+
 'use client';
 
 import React from 'react';
@@ -34,16 +36,16 @@ export function CartDrawer() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsCartOpen(false)}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 transition-opacity"
           />
 
-          {/* Drawer */}
+          {/* Drawer - Fixed Viewport constraints using inset-y-0 */}
           <motion.div
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed right-0 w-full max-w-[450px] bg-[#0A0A0A] shadow-2xl z-50 flex flex-col pt-safe pb-safe-offset border-l border-white/10 top-[112px] h-[calc(100vh-112px)]"
+            className="fixed inset-y-0 right-0 w-full max-w-[450px] bg-[#0A0A0A] shadow-2xl z-[60] flex flex-col pt-safe pb-safe-offset border-l border-white/10"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-5 sm:p-6 border-b border-white/10 bg-[#111] shrink-0">
@@ -52,7 +54,7 @@ export function CartDrawer() {
               </h2>
               <button
                 onClick={() => setIsCartOpen(false)}
-                className="p-2 -mr-2 text-gray-400 hover:text-white transition-colors"
+                className="p-2 -mr-2 text-gray-400 hover:text-white transition-colors rounded-md"
                 aria-label="Close cart"
               >
                 <X className="h-6 w-6" />
@@ -72,7 +74,7 @@ export function CartDrawer() {
                   </div>
                   <button
                     onClick={() => setIsCartOpen(false)}
-                    className="h-14 px-8 mt-6 bg-[#C6FF00] text-black font-bold hover:bg-white transition-colors uppercase tracking-widest text-sm w-full sm:w-auto"
+                    className="h-14 px-8 mt-6 bg-[#C6FF00] text-black font-bold hover:bg-[#A3D900] rounded-md transition-colors uppercase tracking-widest text-sm w-full sm:w-auto"
                   >
                     CONTINUE SHOPPING
                   </button>
@@ -84,7 +86,7 @@ export function CartDrawer() {
                 <div className="space-y-6">
                   {items.map((item) => (
                     <div key={`${item.product.id}-${item.size}-${item.color}`} className="flex space-x-4 bg-transparent border-b border-white/5 pb-6">
-                      <div className="relative h-28 w-24 flex-shrink-0 bg-[#111]">
+                      <div className="relative h-28 w-24 flex-shrink-0 bg-[#111] rounded-md overflow-hidden">
                         <Image
                           src={item.product.image}
                           alt={item.product.name}
@@ -100,7 +102,7 @@ export function CartDrawer() {
                           </h3>
                           <button
                             onClick={() => removeFromCart(item.product.id, item.size, item.color)}
-                            className="text-gray-500 hover:text-white transition-colors p-1 -mt-1"
+                            className="text-gray-500 hover:text-white transition-colors p-1 -mt-1 rounded-md"
                             aria-label="Remove item"
                           >
                             <X className="h-4 w-4" />
@@ -111,7 +113,7 @@ export function CartDrawer() {
                         </p>
                         
                         <div className="mt-auto flex items-end justify-between pt-4">
-                          <div className="flex items-center border border-white/20 bg-[#111] overflow-hidden">
+                          <div className="flex items-center border border-white/20 bg-[#111] overflow-hidden rounded-md">
                             <button
                               onClick={() => updateQuantity(item.product.id, item.size, item.color, item.quantity - 1)}
                               className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
@@ -165,18 +167,16 @@ export function CartDrawer() {
                   {/* Checkout Button */}
                   <button
                     onClick={handleWhatsAppCheckout}
-                    className="w-full h-16 bg-[#25D366] text-white font-bold flex items-center justify-center hover:bg-[#1EBE5A] transition-all group uppercase tracking-widest text-base shadow-[0_0_20px_-5px_rgba(37,211,102,0.4)] rounded-sm"
+                    className="w-full h-16 bg-[#C6FF00] text-black font-bold flex items-center justify-center hover:bg-[#A3D900] transition-all group uppercase tracking-widest text-base shadow-[0_0_20px_-5px_rgba(198,255,0,0.4)] rounded-md"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 mr-3">
-                      <path fillRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 1.76.455 3.415 1.258 4.862L2 22l5.34-1.196A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zM9.54 8.78c-.28-.01-.58-.02-.84-.02-.27 0-.71.1-1.08.5s-1.42 1.39-1.42 3.39c0 2 1.45 3.93 1.65 4.19.2.27 2.82 4.41 6.94 6.13 3.65 1.52 4.54 1.22 5.37 1.15.82-.07 2.65-1.08 3.03-2.12.37-1.05.37-1.95.26-2.14-.11-.2-.41-.31-.82-.52s-2.45-1.21-2.83-1.35c-.38-.14-.65-.21-.93.21-.28.42-1.08 1.34-1.32 1.61-.25.28-.49.32-.91.1-1.63-.82-3.1-2-4.14-3.41-.26-.35.03-.5.41-1.28.18-.36.09-.68-.04-.95-.14-.28-.62-1.5-.85-2.06-.23-.55-.46-.47-.63-.48z" clipRule="evenodd" />
-                    </svg>
+                    <MessageCircle className="w-6 h-6 mr-3" />
                     <span>ORDER ON WHATSAPP</span>
                   </button>
                   
                   {/* Secondary CTA */}
                   <button
                     onClick={() => setIsCartOpen(false)}
-                    className="w-full h-12 bg-transparent border border-white/10 text-white font-bold uppercase tracking-widest text-xs flex items-center justify-center hover:bg-white/5 transition-colors rounded-sm mt-3"
+                    className="w-full h-12 bg-transparent border border-white/10 text-white font-bold uppercase tracking-widest text-xs flex items-center justify-center hover:bg-white/5 transition-colors rounded-md mt-3"
                   >
                     CONTINUE SHOPPING
                   </button>

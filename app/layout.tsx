@@ -33,8 +33,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en" className={`${inter.variable} ${anton.variable} ${poppins.variable}`}>
-      <body className="font-sans bg-[#0E0E0E] text-white antialiased selection:bg-[#C6FF00] selection:text-black" suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${anton.variable} ${poppins.variable}`} suppressHydrationWarning>
+      <body className="font-sans bg-[#0E0E0E] text-white antialiased selection:bg-[#C6FF00] selection:text-black">
         <CartProvider>
           <NavBar />
           <CartDrawer />

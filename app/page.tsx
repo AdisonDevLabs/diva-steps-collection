@@ -13,13 +13,12 @@ import { dummyProducts, formatPrice } from '@/lib/data';
 import { testimonials, reviewAvatars, reviewStats } from '@/lib/data/testimonials';
 import { heroCategories } from '@/lib/data/categories';
 import { brand } from '@/lib/data/brand';
-import { useCart } from '@/lib/CartContext';
 import { Footer } from '@/components/Footer';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
-  const { addToCart } = useCart();
+  const containerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   
   const [timeLeft, setTimeLeft] = useState(4 * 3600 + 45 * 60 + 30);
@@ -50,7 +49,7 @@ export default function Home() {
           }
         );
       });
-    }, heroRef);
+    }, containerRef); 
     
     const timer = setInterval(() => {
       setTimeLeft(prev => (prev > 0 ? prev - 1 : 0));
@@ -74,9 +73,9 @@ export default function Home() {
   const flashDeals = dummyProducts.filter(p => p.isFlashDeal);
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#0E0E0E] text-white">
+    <div ref={containerRef} className="flex flex-col min-h-screen bg-[#0E0E0E] text-white">
       {/* Hero Section */}
-      <section ref={heroRef} className="relative h-[100svh] min-h-[600px] w-full overflow-hidden flex flex-col items-center justify-center text-center px-6">
+      <section ref={heroRef} className="relative h-[calc(100svh-96px)] md:h-[calc(100svh-100px)] min-h-[600px] w-full overflow-hidden flex flex-col items-center justify-center text-center px-6 bg-[#0E0E0E]">
         {/* Background Image with Slow Zoom */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -97,7 +96,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md px-4 py-2 border border-white/20 mb-8"
+              className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md px-4 py-2 border border-white/20 mb-8 rounded-md"
             >
               <span className="text-white text-[10px] sm:text-xs font-bold tracking-widest uppercase">Premium Women&apos;s Footwear in Kenya</span>
             </motion.div>
@@ -119,7 +118,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              className="text-gray-200 text-base sm:text-lg md:text-xl max-w-2xl mb-8 font-medium leading-relaxed drop-shadow-md"
+              className="text-gray-300 text-base sm:text-lg md:text-xl max-w-2xl mb-8 font-medium leading-relaxed drop-shadow-md"
             >
               {brand.description}
             </motion.p>
@@ -155,13 +154,13 @@ export default function Home() {
                 href={`https://wa.me/${brand.whatsappNumber}`} 
                 target="_blank"
                 rel="noreferrer"
-                className="h-14 sm:h-16 px-10 rounded-none bg-[#25D366] text-white font-bold uppercase tracking-widest text-sm flex items-center justify-center hover:bg-[#1EBE5A] transition-colors shadow-[0_0_20px_-5px_rgba(37,211,102,0.5)]"
+                className="h-14 sm:h-16 px-10 rounded-md bg-[#C6FF00] text-black font-bold uppercase tracking-widest text-sm flex items-center justify-center hover:bg-[#A3D900] transition-colors shadow-[0_0_20px_-5px_rgba(198,255,0,0.4)]"
                >
                  <MessageCircle className="mr-3 h-5 w-5" /> Order on WhatsApp
                </a>
                <Link 
                 href="/shop" 
-                className="h-14 sm:h-16 px-10 rounded-none bg-transparent border-2 border-white text-white font-bold uppercase tracking-widest text-sm flex items-center justify-center hover:bg-white hover:text-black transition-colors"
+                className="h-14 sm:h-16 px-10 rounded-md bg-transparent border-2 border-white text-white font-bold uppercase tracking-widest text-sm flex items-center justify-center hover:bg-white hover:text-black transition-colors"
                >
                  Shop Collection
                </Link>
@@ -170,17 +169,14 @@ export default function Home() {
       </section>
 
       {/* Featured Collections */}
-      <section className="reveal-section py-24 bg-[#0a0a0a]">
+      <section className="reveal-section py-24 bg-[#141414]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between md:items-end mb-16">
             <h2 className="font-display uppercase tracking-wide text-5xl md:text-7xl text-white">Featured Collections</h2>
-            <p className="text-gray-400 max-w-sm mt-4 md:mt-0 font-medium">Find your type. Browse by style and step out in confidence.</p>
+            <p className="text-gray-300 max-w-sm mt-4 md:mt-0 font-medium">Find your type. Browse by style and step out in confidence.</p>
           </div>
           
-          <div 
-            className="flex -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-6 gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory md:overflow-visible pb-8 md:pb-0"
-            style={{ scrollbarWidth: 'none' }}
-          >
+          <div className="flex -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-6 gap-4 md:gap-6 overflow-x-auto pb-8 md:pb-0 after:content-[''] after:min-w-[24px] md:after:hidden">
             {heroCategories.map((collection, idx) => (
               <Link 
                 href={`/shop?category=${collection.slug}`} 
@@ -196,8 +192,8 @@ export default function Home() {
                   className="object-cover transition-transform duration-1000 group-hover:scale-110 opacity-80 group-hover:opacity-100"
                 />
                 
-                <div className="absolute inset-x-0 top-0 p-6 z-20 flex justify-between items-start opacity-100 transition-opacity rounded-md">
-                   <div className="bg-[#C6FF00] text-black text-[10px] sm:text-xs font-bold px-3 py-1.5 uppercase tracking-widest">
+                <div className="absolute inset-x-0 top-0 p-6 z-20 flex justify-between items-start opacity-100 transition-opacity">
+                   <div className="bg-[#C6FF00] text-black rounded-md text-[10px] sm:text-xs font-bold px-3 py-1.5 uppercase tracking-widest">
                      {collection.label}
                    </div>
                 </div>
@@ -205,7 +201,7 @@ export default function Home() {
                 <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 flex flex-col justify-end z-20 transition-transform duration-500">
                   <h3 className="text-white font-display uppercase tracking-wider text-4xl md:text-5xl mb-2 shadow-black drop-shadow-xl group-hover:text-[#C6FF00] transition-colors">{collection.name}</h3>
                   <div className="flex mt-4 opacity-0 -translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-                    <span className="flex items-center text-white text-sm font-bold uppercase tracking-widest bg-white/10 backdrop-blur-md px-6 py-3 border border-white/20 group-hover:bg-[#C6FF00] group-hover:text-black group-hover:border-[#C6FF00]">
+                    <span className="flex items-center rounded-md text-white text-sm font-bold uppercase tracking-widest bg-white/10 backdrop-blur-md px-6 py-3 border border-white/20 group-hover:bg-[#C6FF00] group-hover:text-black group-hover:border-[#C6FF00]">
                       Shop Now <ArrowRight className="ml-2 h-4 w-4" />
                     </span>
                   </div>
@@ -218,7 +214,7 @@ export default function Home() {
 
       {/* Flash Deals Section */}
       {flashDeals.length > 0 && (
-        <section className="reveal-section py-24 bg-[#0a0a0a] border-y border-[#FF6B00]/20 relative overflow-hidden">
+        <section className="reveal-section py-24 bg-[#0E0E0E] border-y border-[#FF6B00]/20 relative overflow-hidden">
           {/* Subtle dark radial gradient for depth */}
           <div className="absolute inset-x-0 top-0 h-full bg-gradient-to-b from-[#1a0a00] to-transparent pointer-events-none opacity-50 z-0" />
           
@@ -226,10 +222,10 @@ export default function Home() {
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
               <div className="w-full md:w-auto">
                 <div className="flex flex-wrap items-center gap-4 mb-4">
-                  <div className="bg-[#FF6B00] text-white text-xs font-bold px-4 py-2 uppercase tracking-widest flex items-center animate-pulse  rounded-md">
+                  <div className="bg-[#FF6B00] text-white text-xs font-bold px-4 py-2 rounded-md uppercase tracking-widest flex items-center animate-pulse">
                      <Zap className="h-4 w-4 mr-2" /> Live Now
                   </div>
-                  <div className="flex items-center text-[#FF6B00] font-mono text-xs sm:text-2xl lg:text-3xl font-bold rounded-md bg-[#FF6B00]/10 px-4 py-2 border border-[#FF6B00]/30 shadow-[0_0_15px_rgba(255,107,0,0.2)]">
+                  <div className="flex items-center text-[#FF6B00] font-mono text-sm sm:text-xl lg:text-3xl font-bold rounded-md bg-[#FF6B00]/10 px-4 py-2 border border-[#FF6B00]/30 shadow-[0_0_15px_rgba(255,107,0,0.2)]">
                     <Clock className="h-5 w-5 mr-3" />
                     <span>{formatTime(timeLeft)}</span>
                   </div>
@@ -246,17 +242,11 @@ export default function Home() {
               </Link>
             </div>
             
-            <div 
-              className="flex -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-4 gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory md:overflow-visible pb-8 md:pb-0"
-              style={{ scrollbarWidth: 'none' }}
-            >
+            <div className="flex -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-4 gap-4 md:gap-6 overflow-x-auto pb-8 md:pb-0 after:content-[''] after:min-w-[24px] md:after:hidden">
               {flashDeals.map((product) => {
-                const stockLeft = (product.id.charCodeAt(0) % 4) + 1; // 1 to 4 left
-                const viewing = (product.id.charCodeAt(product.id.length - 1) % 15) + 5; // 5 to 19 viewing
-                
                 return (
-                 <div key={product.id} className="relative min-w-[75vw] sm:min-w-[45vw] md:min-w-0 snap-center group flex flex-col bg-[#0E0E0E] border border-white/10 hover:border-[#FF6B00] transition-colors overflow-hidden rounded-md">
-                  <Link href={`/product/${product.id}`} className="block relative aspect-[4/3] bg-black overflow-hidden group-hover:opacity-90 transition-opacity rounded-md">
+                 <div key={product.id} className="relative min-w-[75vw] sm:min-w-[45vw] md:min-w-0 snap-center group flex flex-col bg-[#141414] border border-white/10 hover:border-[#FF6B00] transition-colors overflow-hidden rounded-md">
+                  <Link href={`/product/${product.id}`} className="block relative aspect-[4/3] bg-black overflow-hidden group-hover:opacity-90 transition-opacity rounded-t-md">
                     {/* Discount Badge */}
                     {product.originalPrice && (
                       <div className="absolute top-2 left-2 z-20 rounded-md bg-[#FF6B00] text-white text-sm font-display uppercase tracking-widest px-3 py-1 shadow-[0_0_20px_rgba(255,107,0,0.4)]">
@@ -266,7 +256,7 @@ export default function Home() {
                     
                     {/* Social Proof Badge */}
                      <div className="absolute top-2 right-2 z-20 bg-black/60 backdrop-blur-md text-white border rounded-md border-white/10 text-[10px] sm:text-xs font-bold px-3 py-1.5 uppercase tracking-widest flex items-center">
-                       <Eye className="h-3 w-3 mr-1.5 text-[#C6FF00]" /> {viewing} viewing
+                       <Eye className="h-3 w-3 mr-1.5 text-[#C6FF00]" /> High Demand
                      </div>
 
                     <Image
@@ -280,12 +270,12 @@ export default function Home() {
                   
                   {/* Stock Indicator Progress Bar */}
                   <div className="px-5 pt-4">
-                    <div className="flex justify-between text-xs uppercase tracking-widest text-[#FF6B00] mb-2">
-                       <span>Almost Sold Out</span>
-                       <span>Only {stockLeft} left</span>
+                    <div className="flex justify-between text-xs uppercase tracking-widest text-[#FF6B00] mb-2 font-bold">
+                       <span>Selling Fast</span>
+                       <span>Limited Stock</span>
                     </div>
                     <div className="w-full bg-white/10 h-1.5 rounded-full">
-                       <div className="bg-[#FF6B00] h-full rounded-full" style={{ width: `${(stockLeft / 10) * 100}%` }}></div>
+                       <div className="bg-[#FF6B00] h-full rounded-full" style={{ width: `85%` }}></div>
                     </div>
                   </div>
 
@@ -303,21 +293,21 @@ export default function Home() {
                     </Link>
                   </div>
                   
-                  {/* Action Buttons (Sticky on mobile, hover lift on desktop) */}
-                  <div className="p-3 mt-auto flex flex-col gap-2 relative z-30 rounded-xl">
+                  {/* Action Buttons */}
+                  <div className="p-4 mt-auto flex flex-col gap-2 relative z-30">
                        <a 
                         href={`https://wa.me/${brand.whatsappNumber}?text=I'm interested in the flash deal for ${product.name}`}
                         target="_blank" rel="noreferrer"
-                        className="w-full bg-[#25D366] text-white font-bold py-2.5 hover:bg-[#1EBE5A] transition-colors flex justify-center items-center uppercase tracking-widest text-xs"
+                        className="w-full bg-[#C6FF00] text-black rounded-md font-bold py-2.5 hover:bg-[#A3D900] transition-colors flex justify-center items-center uppercase tracking-widest text-xs"
                        >
                          <MessageCircle className="h-4 w-4 mr-2" /> Order On WhatsApp
                        </a>
-                      <button 
-                        onClick={(e) => { e.preventDefault(); addToCart(product, product.sizes[0] || '38'); }}
-                        className="w-full bg-transparent border border-white/20 text-white font-bold py-2.5 hover:bg-white hover:text-black transition-colors flex justify-center items-center uppercase tracking-widest text-xs"
+                      <Link 
+                        href={`/product/${product.id}`}
+                        className="w-full bg-transparent border rounded-md border-white/20 text-white font-bold py-2.5 hover:bg-white hover:text-black transition-colors flex justify-center items-center uppercase tracking-widest text-xs"
                        >
-                         Add to Cart
-                       </button>
+                         Select Size
+                       </Link>
                   </div>
                 </div>
                 );
@@ -328,7 +318,7 @@ export default function Home() {
       )}
 
       {/* New Arrivals Grid */}
-      <section className="reveal-section py-24 bg-[#0E0E0E] border-t border-white/5 relative">
+      <section className="reveal-section py-24 bg-[#141414] border-t border-white/5 relative">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="flex flex-col md:flex-row justify-between md:items-end mb-16">
             <div>
@@ -337,43 +327,27 @@ export default function Home() {
                 <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest">Updated Weekly</span>
               </div>
               <h2 className="font-display uppercase tracking-wide text-5xl md:text-7xl text-white">Latest Styles</h2>
-              <p className="text-gray-400 mt-4 max-w-xl font-medium text-base md:text-lg">Fresh styles added weekly — be the first to own them.</p>
+              <p className="text-gray-300 mt-4 max-w-xl font-medium text-base md:text-lg">Fresh styles added weekly — be the first to own them.</p>
             </div>
             <Link href="/shop?category=new-arrivals" className="mt-8 md:mt-0 h-12 px-8 border border-white/20 text-white font-bold hover:bg-white hover:text-black transition-colors flex items-center justify-center uppercase tracking-widest text-sm group rounded-md">
               View All Arrivals <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
             {newArrivals.map((product) => (
               <div key={product.id} className="group flex flex-col bg-transparent lg:hover:-translate-y-2 transition-transform duration-500">
-                <Link href={`/product/${product.id}`} className="relative aspect-[3/4] bg-neutral-900 border border-white/10 overflow-hidden mb-5 block rounded-md">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    referrerPolicy="no-referrer"
-                    className="object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out opacity-90 group-hover:opacity-100"
-                  />
-                  
-                  {/* Desktop Quick Actions - Reveal on Hover */}
-                  <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform rounded-md duration-300 z-20 hidden lg:flex flex-col gap-2">
-                     <a 
-                      href={`https://wa.me/${brand.whatsappNumber}?text=I'm interested in the new arrival: ${product.name}`}
-                      target="_blank" rel="noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="w-full bg-[#25D366] text-white font-bold py-3 hover:bg-[#1EBE5A] transition-colors flex justify-center items-center uppercase tracking-widest text-xs rounded-md"
-                     >
-                       <MessageCircle className="h-4 w-4 mr-2" /> Order on WhatsApp
-                     </a>
-                     <button 
-                      onClick={(e) => { e.preventDefault(); addToCart(product, product.sizes[0] || '38'); }}
-                      className="w-full bg-black/50 backdrop-blur-sm border border-white/20 text-white font-bold py-2.5 hover:bg-white rounded-md hover:text-black transition-colors flex justify-center items-center uppercase tracking-widest text-xs"
-                     >
-                       Add to Cart
-                     </button>
-                  </div>
-                </Link>
+                <div className="relative aspect-[3/4] bg-neutral-900 border border-white/10 overflow-hidden mb-5 block rounded-md">
+                  <Link href={`/product/${product.id}`} className="block w-full h-full absolute inset-0 z-10">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      referrerPolicy="no-referrer"
+                      className="object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out opacity-90 group-hover:opacity-100"
+                    />
+                  </Link>
+                </div>
                 
                 <div className="flex-1 flex flex-col text-center px-1">
                   <p className="text-[9px] sm:text-[10px] text-[#C6FF00] font-bold uppercase tracking-widest mb-1.5 flex justify-center items-center">
@@ -388,21 +362,21 @@ export default function Home() {
                     <span className="font-display tracking-widest text-xl text-white">{formatPrice(product.price)}</span>
                   </div>
 
-                  {/* Mobile Quick Actions - Always visible on small screens below product */}
-                  <div className="mt-4 flex flex-col gap-2 lg:hidden w-full">
+                  {/* Actions - Always visible below content */}
+                  <div className="mt-4 flex flex-col gap-2 w-full">
                      <a 
                       href={`https://wa.me/${brand.whatsappNumber}?text=I'm interested in the new arrival: ${product.name}`}
                       target="_blank" rel="noreferrer"
-                      className="w-full bg-[#25D366] text-white font-bold py-2 rounded-md transition-colors flex justify-center items-center uppercase tracking-widest text-[9px]"
+                      className="w-full bg-[#C6FF00] text-black font-bold py-2 rounded-md transition-colors flex justify-center items-center uppercase tracking-widest text-[9px] sm:text-xs hover:bg-[#A3D900]"
                      >
-                       <MessageCircle className="h-3 w-3 mr-2" /> Order on WhatsApp
+                       <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-2" /> Order on WhatsApp
                      </a>
-                     <button 
-                      onClick={() => addToCart(product, product.sizes[0] || '38')}
-                      className="w-full bg-transparent border border-white/20 text-white font-bold py-2 rounded-md transition-colors flex justify-center items-center uppercase tracking-widest text-[10px]"
+                     <Link 
+                      href={`/product/${product.id}`}
+                      className="w-full bg-transparent border border-white/20 text-white font-bold py-2 rounded-md transition-colors flex justify-center items-center uppercase tracking-widest text-[10px] sm:text-xs hover:bg-white hover:text-black"
                      >
-                       Add to Cart
-                     </button>
+                       Select Size
+                     </Link>
                   </div>
                 </div>
               </div>
@@ -412,7 +386,7 @@ export default function Home() {
       </section>
 
       {/* Best Sellers Section */}
-      <section className="reveal-section py-24 bg-[#111] border-t border-white/5 relative">
+      <section className="reveal-section py-24 bg-[#0E0E0E] border-t border-white/5 relative">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="flex flex-col md:flex-row justify-between md:items-end mb-16">
             <div>
@@ -421,43 +395,27 @@ export default function Home() {
                 <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest">Customer Favorites</span>
               </div>
               <h2 className="font-display uppercase tracking-wide text-5xl md:text-7xl text-white">BEST SELLERS</h2>
-              <p className="text-gray-400 mt-4 max-w-xl font-medium text-base md:text-lg">Trusted and loved by hundreds of happy customers across Kenya.</p>
+              <p className="text-gray-300 mt-4 max-w-xl font-medium text-base md:text-lg">Trusted and loved by hundreds of happy customers across Kenya.</p>
             </div>
             <Link href="/shop?category=best-sellers" className="mt-6 md:mt-0 h-12 px-8 border border-white/20 text-white font-bold hover:bg-white hover:text-black transition-colors flex items-center justify-center uppercase tracking-widest text-sm group rounded-md">
               View All Favorites <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
             {bestSellers.slice(0, 4).map((product) => (
               <div key={product.id} className="group flex flex-col bg-transparent">
-                <Link href={`/product/${product.id}`} className="relative aspect-[4/5] bg-neutral-900 border border-white/10 overflow-hidden mb-5 block group-hover:border-[#FF6B00] transition-colors rounded-md">                  
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    referrerPolicy="no-referrer"
-                    className="object-cover transition-transform duration-700 ease-in-out opacity-90 group-hover:opacity-100 group-hover:scale-105"
-                  />
-                  
-                  {/* Desktop Quick Actions */}
-                  <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20 hidden lg:flex flex-col gap-2">
-                     <a 
-                      href={`https://wa.me/${brand.whatsappNumber}?text=I'm interested in your best seller: ${product.name}`}
-                      target="_blank" rel="noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="w-full bg-[#25D366] text-white font-bold py-2 hover:bg-[#1EBE5A] transition-colors flex justify-center items-center uppercase tracking-widest text-xs"
-                     >
-                       <MessageCircle className="h-4 w-4 mr-2" /> Order On WhatsApp
-                     </a>
-                     <button 
-                      onClick={(e) => { e.preventDefault(); addToCart(product, product.sizes[0] || '38'); }}
-                      className="w-full bg-black/50 backdrop-blur-sm border border-white/20 text-white font-bold py-2.5 hover:bg-white hover:text-black transition-colors flex justify-center items-center uppercase tracking-widest text-xs"
-                     >
-                       Add to Cart
-                     </button>
-                  </div>
-                </Link>
+                <div className="relative aspect-[4/5] bg-neutral-900 border border-white/10 overflow-hidden mb-5 block group-hover:border-[#FF6B00] transition-colors rounded-md">                  
+                  <Link href={`/product/${product.id}`} className="block w-full h-full absolute inset-0 z-10">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      referrerPolicy="no-referrer"
+                      className="object-cover transition-transform duration-700 ease-in-out opacity-90 group-hover:opacity-100 group-hover:scale-105"
+                    />
+                  </Link>
+                </div>
                 
                 <div className="flex-1 flex flex-col text-left px-1">
                   <div className="flex items-center gap-1 mb-2">
@@ -484,21 +442,21 @@ export default function Home() {
                     <ShoppingBag className="h-3 w-3 mr-1 text-gray-500" /> {brand.salesCallout}
                   </div>
 
-                  {/* Mobile Quick Actions */}
-                  <div className="mt-auto flex flex-col gap-2 lg:hidden w-full">
+                  {/* Actions */}
+                  <div className="mt-auto flex flex-col gap-2 w-full">
                      <a 
                       href={`https://wa.me/${brand.whatsappNumber}?text=I'm interested in your best seller: ${product.name}`}
                       target="_blank" rel="noreferrer"
-                      className="w-full bg-[#25D366] text-white font-bold py-2 rounded-md transition-colors flex justify-center items-center uppercase tracking-widest text-[9px]"
+                      className="w-full bg-[#C6FF00] text-black font-bold py-2 rounded-md transition-colors flex justify-center items-center uppercase tracking-widest text-[9px] sm:text-xs hover:bg-[#A3D900]"
                      >
-                       <MessageCircle className="h-3 w-3 mr-2" /> Order on WhatsApp
+                       <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-2" /> Order on WhatsApp
                      </a>
-                     <button 
-                      onClick={() => addToCart(product, product.sizes[0] || '38')}
-                      className="w-full bg-transparent border border-white/20 text-white font-bold py-2 rounded-md transition-colors flex justify-center items-center uppercase tracking-widest text-[10px]"
+                     <Link 
+                      href={`/product/${product.id}`}
+                      className="w-full bg-transparent border border-white/20 text-white font-bold py-2 rounded-md transition-colors flex justify-center items-center uppercase tracking-widest text-[10px] sm:text-xs hover:bg-white hover:text-black"
                      >
-                       Add to Cart
-                     </button>
+                       Select Size
+                     </Link>
                   </div>
                 </div>
               </div>
@@ -508,7 +466,7 @@ export default function Home() {
       </section>
 
       {/* Why Customers Choose Us */}
-      <section className="reveal-section py-24 bg-[#0a0a0a] border-t border-white/5 relative">
+      <section className="reveal-section py-24 bg-[#141414] border-t border-white/5 relative">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
             <div className="inline-flex items-center text-[#C6FF00] mb-4">
@@ -516,19 +474,19 @@ export default function Home() {
               <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest">Trust & Reliability</span>
             </div>
             <h2 className="font-display uppercase tracking-wide text-4xl md:text-6xl text-white mb-6">WHY SHOP WITH<br/>DIVA STEPS</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto font-medium text-base md:text-lg">
+            <p className="text-gray-300 max-w-2xl mx-auto font-medium text-base md:text-lg">
               We focus on quality, affordability, and fast service to make your shopping experience effortless.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {/* Feature 1 */}
             <div className="bg-[#0E0E0E] min-h-[220px] p-8 md:p-10 border border-white/5 hover:border-[#C6FF00]/50 transition-all duration-300 group cursor-default rounded-md">
               <div className="bg-white/5 w-14 h-14 flex items-center justify-center mb-6 group-hover:bg-[#C6FF00]/10 transition-colors rounded-md">
                 <Star className="h-6 w-6 text-white group-hover:text-[#C6FF00] transition-colors" />
               </div>
               <h3 className="font-display tracking-widest uppercase text-xl text-white mb-3">{brand.features[0].title}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
+              <p className="text-gray-300 text-sm leading-relaxed">
                 {brand.features[0].description}
               </p>
             </div>
@@ -539,7 +497,7 @@ export default function Home() {
                 <Wallet className="h-6 w-6 text-white group-hover:text-[#C6FF00] transition-colors" />
               </div>
               <h3 className="font-display tracking-widest uppercase text-xl text-white mb-3">{brand.features[1].title}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
+              <p className="text-gray-300 text-sm leading-relaxed">
                 {brand.features[1].description}
               </p>
             </div>
@@ -550,7 +508,7 @@ export default function Home() {
                 <Truck className="h-6 w-6 text-white group-hover:text-[#C6FF00] transition-colors" />
               </div>
               <h3 className="font-display tracking-widest uppercase text-xl text-white mb-3">{brand.features[2].title}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
+              <p className="text-gray-300 text-sm leading-relaxed">
                 {brand.features[2].description}
               </p>
             </div>
@@ -558,10 +516,10 @@ export default function Home() {
             {/* Feature 4 */}
             <div className="bg-[#0E0E0E] min-h-[220px] p-8 md:p-10 border border-white/5 hover:border-[#C6FF00]/50 transition-all duration-300 group cursor-default rounded-md">
               <div className="bg-white/5 w-14 h-14 flex items-center justify-center mb-6 group-hover:bg-[#C6FF00]/10 transition-colors rounded-md">
-                <MessageCircle className="h-6 w-6 text-white group-hover:text-[#25D366] transition-colors" />
+                <MessageCircle className="h-6 w-6 text-white group-hover:text-[#C6FF00] transition-colors" />
               </div>
               <h3 className="font-display tracking-widest uppercase text-xl text-white mb-3">{brand.features[3].title}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
+              <p className="text-gray-300 text-sm leading-relaxed">
                 {brand.features[3].description}
               </p>
             </div>
@@ -570,11 +528,11 @@ export default function Home() {
       </section>
 
       {/* Customer Reviews Section */}
-      <section className="reveal-section py-24 bg-[#0a0a0a] relative overflow-hidden border-t border-white/5">
+      <section className="reveal-section py-24 bg-[#0E0E0E] relative overflow-hidden border-t border-white/5">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="flex flex-col md:flex-row justify-between md:items-end mb-16">
             <div>
-              <div className="inline-flex items-center text-[#25D366] mb-4">
+              <div className="inline-flex items-center text-[#C6FF00] mb-4">
                 <Heart className="h-4 w-4 mr-2" />
                 <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest">Real Customers from TikTok & WhatsApp</span>
               </div>
@@ -595,24 +553,21 @@ export default function Home() {
             </div>
           </div>
 
-          <div 
-            className="flex -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-3 gap-6 overflow-x-auto snap-x snap-mandatory md:overflow-visible pb-8 md:pb-0"
-            style={{ scrollbarWidth: 'none' }}
-          >
+          <div className="flex -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-3 gap-6 overflow-x-auto pb-8 md:pb-0 after:content-[''] after:min-w-[24px] md:after:hidden">
             {testimonials.map((review) => (
-              <div key={review.id} className="min-w-[85vw] sm:min-w-[400px] md:min-w-0 snap-center bg-[#0E0E0E] border border-white/5 hover:border-[#C6FF00]/30 p-3 flex flex-col group rounded-md lg:hover:-translate-y-2 transition-all duration-500">
+              <div key={review.id} className="min-w-[85vw] sm:min-w-[400px] md:min-w-0 snap-center bg-[#141414] border border-white/5 hover:border-[#C6FF00]/30 p-6 flex flex-col group rounded-md lg:hover:-translate-y-2 transition-all duration-500">
                 <div className="flex justify-between items-start mb-6">
                   <div className="flex text-[#FF6B00]">
                     {[...Array(5)].map((_, i) => (
                        <Star key={i} className={`w-4 h-4 ${i < Math.floor(review.rating) ? 'fill-current' : 'text-gray-600'}`} />
                     ))}
                   </div>
-                  <div className="bg-[#25D366]/10 text-[#25D366] text-[10px] right-3 font-bold px-2 py-1 uppercase rounded-md tracking-widest flex items-center border border-[#25D366]/20">
-                    <CheckCircle className="w-3 h-3 mr-1" /> Verified WhatsApp Order
+                  <div className="bg-[#C6FF00]/10 text-[#C6FF00] text-[10px] right-3 font-bold px-2 py-1 uppercase rounded-md tracking-widest flex items-center border border-[#C6FF00]/20">
+                    <CheckCircle className="w-3 h-3 mr-1" /> Verified Order
                   </div>
                 </div>
                 
-                <p className="text-white text-base md:text-lg italic mb-8 flex-1 leading-relaxed">
+                <p className="text-gray-300 text-base md:text-lg italic mb-8 flex-1 leading-relaxed">
                   &ldquo;{review.text}&rdquo;
                 </p>
                 
@@ -638,17 +593,17 @@ export default function Home() {
       </section>
 
       {/* WhatsApp CTA */}
-      <section className="reveal-section py-24 bg-[#111111] relative overflow-hidden border-t border-white/5">
+      <section className="reveal-section py-24 bg-[#141414] relative overflow-hidden border-t border-white/5">
         {/* Background Accent */}
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#25D366]/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#C6FF00]/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             
             {/* Left Content */}
             <div className="flex flex-col items-start text-left">
-              <div className="inline-flex items-center text-[#25D366] bg-[#25D366]/10 px-4 py-2 rounded-full mb-8 border border-[#25D366]/20">
-                <div className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse mr-3"></div>
+              <div className="inline-flex items-center text-[#C6FF00] bg-[#C6FF00]/10 px-4 py-2 rounded-md mb-8 border border-[#C6FF00]/20">
+                <div className="w-2 h-2 rounded-full bg-[#C6FF00] animate-pulse mr-3"></div>
                 <span className="text-xs font-bold uppercase tracking-widest">We Are Online</span>
               </div>
               
@@ -656,7 +611,7 @@ export default function Home() {
                 START YOUR <br className="hidden md:block"/>ORDER NOW
               </h2>
               
-              <p className="text-gray-400 font-medium text-lg md:text-xl mb-10 max-w-lg leading-relaxed">
+              <p className="text-gray-300 font-medium text-lg md:text-xl mb-10 max-w-lg leading-relaxed">
                 Chat with us directly on WhatsApp to confirm size, price, and delivery in minutes.
               </p>
 
@@ -686,7 +641,7 @@ export default function Home() {
                   href={`https://wa.me/${brand.whatsappNumber}?text=${encodeURIComponent(brand.whatsappMessage.general)}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex h-14 sm:h-16 px-5 sm:px-8 bg-[#25D366] text-white font-bold text-md rounded-md items-center justify-center hover:bg-[#1EBE5A] transition-all hover:scale-105 uppercase tracking-widest group shadow-[0_0_40px_-10px_rgba(37,211,102,0.4)]"
+                  className="inline-flex h-14 sm:h-16 px-5 sm:px-8 bg-[#C6FF00] text-black font-bold text-md rounded-md items-center justify-center hover:bg-[#A3D900] transition-all hover:scale-105 uppercase tracking-widest group shadow-[0_0_40px_-10px_rgba(198,255,0,0.4)]"
                 >
                   <MessageCircle className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
                   Order on WhatsApp
@@ -696,9 +651,9 @@ export default function Home() {
 
             {/* Right Visual mock */}
             <div className="relative w-full max-w-lg mx-auto lg:ml-auto">
-              <div className="absolute inset-x-0 bottom-0 top-1/2 bg-gradient-to-t from-[#111111] to-transparent z-10 pointer-events-none"></div>
+              <div className="absolute inset-x-0 bottom-0 top-1/2 bg-gradient-to-t from-[#141414] to-transparent z-10 pointer-events-none"></div>
               
-              <div className="bg-[#1A1A1A] border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl relative">
+              <div className="bg-[#1A1A1A] border border-white/10 rounded-xl overflow-hidden shadow-2xl relative">
                 {/* Chat Header */}
                 <div className="bg-[#242424] px-6 py-4 flex items-center border-b border-white/5">
                    <div className="w-10 h-10 rounded-full bg-neutral-800 flex items-center justify-center mr-4 border border-white/10">
@@ -706,7 +661,7 @@ export default function Home() {
                    </div>
                    <div>
                      <p className="text-white font-bold text-sm">{brand.name}</p>
-                     <p className="text-[#25D366] text-xs font-medium">Online</p>
+                     <p className="text-[#C6FF00] text-xs font-medium">Online</p>
                    </div>
                    <MessageCircle className="w-5 h-5 text-gray-500 ml-auto" />
                 </div>
@@ -720,18 +675,18 @@ export default function Home() {
                           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center mt-auto border border-white/10">
                              <span className="font-display text-white text-xs">DS</span>
                           </div>
-                          <div className="bg-[#242424] p-4 rounded-2xl rounded-bl-sm border border-white/5 shadow-md">
-                             <p className="text-white text-sm">{msg.text}</p>
+                          <div className="bg-[#242424] p-4 rounded-xl rounded-bl-sm border border-white/5 shadow-md">
+                             <p className="text-gray-300 text-sm">{msg.text}</p>
                              <p className="text-gray-500 text-[10px] text-right mt-1">{msg.time}</p>
                           </div>
                        </div>
                       ) : (
                         <div key={idx} className="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
-                          <div className="bg-[#005C4B] p-4 rounded-2xl rounded-br-sm border border-[#005C4B]/50 shadow-md">
-                             <p className="text-white text-sm">{msg.text}</p>
+                          <div className="bg-[#C6FF00]/20 p-4 rounded-xl rounded-br-sm border border-[#C6FF00]/30 shadow-md">
+                             <p className="text-gray-300 text-sm">{msg.text}</p>
                              <div className="flex justify-end items-center mt-1 space-x-1">
-                                <p className="text-white/60 text-[10px]">{msg.time}</p>
-                                <CheckCircle className="w-3 h-3 text-[#53bdeb]" />
+                                <p className="text-gray-400 text-[10px]">{msg.time}</p>
+                                <CheckCircle className="w-3 h-3 text-[#C6FF00]" />
                              </div>
                           </div>
                        </div>
@@ -742,10 +697,10 @@ export default function Home() {
 
                 {/* Chat Input */}
                 <div className="absolute bottom-0 inset-x-0 bg-[#242424] p-4 flex items-center border-t border-white/5 z-20">
-                   <div className="bg-[#1A1A1A] w-full rounded-full h-10 flex items-center px-4 border border-white/5">
+                   <div className="bg-[#1A1A1A] w-full rounded-md h-10 flex items-center px-4 border border-white/5">
                       <p className="text-gray-500 text-sm">Message...</p>
                    </div>
-                   <div className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center ml-3 flex-shrink-0">
+                   <div className="w-10 h-10 rounded-md bg-[#C6FF00] flex items-center justify-center ml-3 flex-shrink-0">
                       <MessageCircle className="w-5 h-5 text-black fill-black" />
                    </div>
                 </div>
