@@ -14,13 +14,14 @@ export function CartDrawer() {
   const { items, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart, cartTotal, cartCount } = useCart();
 
   const handleWhatsAppCheckout = () => {
-    let message = `Hello Diva Steps Collection,\n\nI would like to place an order.\n\nItems:\n`;
+    let message = `Hello Diva Steps Collection\n\nI would like to order:\n\n`;
     
     items.forEach(item => {
       message += `• ${item.product.name} × ${item.quantity}\n  Size: ${item.size}${item.color ? ` | Color: ${item.color}` : ''}\n`;
     });
-    
-    message += `\nSubtotal: ${formatPrice(cartTotal)}\n\nPlease confirm availability, delivery fee, and total cost.\n\nThank you.`;
+
+    message += `Delivery: \n\n`;
+    message += `\nSubtotal: ${formatPrice(cartTotal)}\n\nPlease confirm availability, total payable and payment method\n\nThank you.`;
     
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/${brand.whatsappNumber}?text=${encodedMessage}`, '_blank');
