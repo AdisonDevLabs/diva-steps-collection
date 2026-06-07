@@ -56,18 +56,36 @@ export const brand = {
   ],
   whatsappMockChat: [
     {
-      sender: "brand",
-      text: "Hello! Welcome to Diva Steps. What style are you looking for today? 👠✨",
-      time: "10:02 AM"
-    },
-    {
       sender: "user",
-      text: "Hi, I want to order the Black Heels in size 39. Are they available?",
+      text: `Hello Diva Steps Collection
+
+I'd like to order:
+
+• Espresso Croc-Embossed Pointed Slide Mules × 2
+Size 38 | Dark Brown
+
+Delivery: Nairobi CBD
+
+Subtotal: KSh 6,800
+
+Please confirm availability, total payable and payment method.
+
+Thank you.
+
+`,
       time: "10:05 AM"
     },
     {
       sender: "brand",
-      text: "Yes, they are! We can deliver today within Nairobi.",
+      text: `Yes, it's available.
+
+Total including delivery: KSh 7,100
+
+You can pay via M-Pesa:
+Till: XXXXXXX
+
+Send the confirmation message once payment is complete.
+`,
       time: "10:06 AM"
     }
   ],

@@ -676,14 +676,14 @@ export default function Home() {
                              <span className="font-display text-white text-xs">DS</span>
                           </div>
                           <div className="bg-[#242424] p-4 rounded-xl rounded-bl-sm border border-white/5 shadow-md">
-                             <p className="text-gray-300 text-sm">{msg.text}</p>
+                             <p className="text-gray-300 text-sm whitespace-pre-wrap">{msg.text}</p>
                              <p className="text-gray-500 text-[10px] text-right mt-1">{msg.time}</p>
                           </div>
                        </div>
                       ) : (
-                        <div key={idx} className="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
+                        <div key={idx} className="flex w-full mt-2 space-x-3 max-w-sm ml-auto justify-end">
                           <div className="bg-[#C6FF00]/20 p-4 rounded-xl rounded-br-sm border border-[#C6FF00]/30 shadow-md">
-                             <p className="text-gray-300 text-sm">{msg.text}</p>
+                             <p className="text-gray-300 text-sm whitespace-pre-wrap">{msg.text}</p>
                              <div className="flex justify-end items-center mt-1 space-x-1">
                                 <p className="text-gray-400 text-[10px]">{msg.time}</p>
                                 <CheckCircle className="w-3 h-3 text-[#C6FF00]" />
